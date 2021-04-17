@@ -1,7 +1,7 @@
 # COCO
 # 
 ## Tablero con el Backlog general:
-##Https://trello.com/invite/b/P6FuKx5q/714c44dab1e799ee87667164092263db/coco
+Https://trello.com/invite/b/P6FuKx5q/714c44dab1e799ee87667164092263db/coco
 
 Documento de reporte: 
 

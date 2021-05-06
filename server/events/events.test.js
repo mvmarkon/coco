@@ -1,5 +1,7 @@
 import MongodbMemoryServer from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import request from 'supertest';
+import app from '../app';
 import Event from './event.model';
 
 const validEventData = {
@@ -12,7 +14,12 @@ describe('event model tests', () => {
 	const mongod = new MongodbMemoryServer();
 	beforeAll(async () => {
 		const uri = await mongod.getConnectionString();
-		await mongoose.connect(uri, { useNewUrlParser: true });
+		await mongoose.connect(uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false
+		});
 	});
 	afterAll(async (done) => {
 		await mongoose.disconnect(done);
@@ -45,4 +52,40 @@ describe('event model tests', () => {
 		expect(failed.errors.date).toBeDefined();
 		expect(failed.errors.protocols).toBeDefined();
 	});
+})
+
+describe('api/events tests', () => {
+	const mongod = new MongodbMemoryServer();
+
+	beforeAll(async () => {
+		const uri = await mongod.getConnectionString();
+		await mongoose.connect(uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false
+		});
+	});
+
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongod.stop();
+  });
+
+  afterEach(async () => {
+    await Event.remove({});
+  });
+
+	it('should post and get an event', async () => {
+    const postResponse = await request(app).post('/api/events').send(validEventData);
+		expect(postResponse.status).toBe(200);
+		expect(postResponse.body._id).toBeDefined();
+		expect(postResponse.body.eventName).toEqual(validEventData.eventName);
+		expect(postResponse.body.protocols).toEqual(validEventData.protocols);
+		expect(Date(postResponse.body.date)).toEqual(Date(validEventData.date));
+
+    const getResponse = await request(app).get('/api/events');
+		expect(getResponse.status).toBe(200);
+    expect(getResponse.body[0]).toEqual(postResponse.body);
+  });
 })

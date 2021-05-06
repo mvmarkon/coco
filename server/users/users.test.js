@@ -9,7 +9,12 @@ describe('/api/users tests', () => {
 
   beforeAll(async () => {
     const uri = await mongod.getConnectionString();
-    await mongoose.connect(uri, { useNewUrlParser: true });
+    await mongoose.connect(uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false
+		});
   });
 
   afterAll(async () => {

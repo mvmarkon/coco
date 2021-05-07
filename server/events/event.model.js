@@ -18,7 +18,11 @@ const eventSchemaDef = {
   protocols: {
     type: String,
     required: true,
-  },
+	},
+	organizer: {
+		type: Schema.Types.ObjectId, ref: 'User',
+		required: true,
+	}
 };
 
 const eventSchema = new Schema(eventSchemaDef);

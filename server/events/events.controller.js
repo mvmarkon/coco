@@ -7,10 +7,19 @@ const router = Router();
 router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
     const event = new Event(request.body);
-		const savedEv = await event.save();
+    const savedEv = await event.save();
     return response.status(200).json(savedEv);
   } catch (error) {
     return response.status(400).send(error);
+  }
+});
+
+router.route('/organizer/:id').get(async (request, response) => {
+  try {
+    const events = await Event.find({ organizer: request.params.id });
+    return response.status(200).json(events);
+  } catch (error) {
+    return response.status(404).send(error);
   }
 });
 

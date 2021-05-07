@@ -7,7 +7,8 @@ import Event from './event.model';
 const validEventData = {
 	eventName: 'primer evento',
 	protocols: 'protocolos',
-	date: new Date()
+	date: new Date(),
+	organizer: mongoose.Types.ObjectId()
 }
 
 describe('event model tests', () => {
@@ -33,6 +34,7 @@ describe('event model tests', () => {
 		const newEvent = new Event(validEventData);
 		const saved = await newEvent.save();
 		expect(saved.id).toBeDefined();
+		expect(saved.organizer).toBe(validEventData.organizer);
 		expect(saved.eventName).toBe(validEventData.eventName);
 		expect(saved.protocols).toBe(validEventData.protocols);
 		expect(saved.date).toBe(validEventData.date);
@@ -87,5 +89,20 @@ describe('api/events tests', () => {
     const getResponse = await request(app).get('/api/events');
 		expect(getResponse.status).toBe(200);
     expect(getResponse.body[0]).toEqual(postResponse.body);
-  });
+	});
+
+	it('should get user events', async () => {
+		const user_id = validEventData.organizer;
+		const getResponse_one = await request(app).get('/api/events/organizer/' + user_id);
+
+		expect(getResponse_one.status).toBe(200);
+		expect(getResponse_one.body.length).toBe(0);
+
+		const createEvent = new Event(validEventData);
+		const saved = await createEvent.save();
+
+		const getResponse_two = await request(app).get('/api/events/organizer/' + user_id);
+		expect(getResponse_two.status).toBe(200);
+		expect(getResponse_two.body.length).toBe(1);
+	});
 })

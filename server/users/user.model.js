@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const userSchemaDef = {
   name: {
     type: String,
-    unique: true,
     required: true,
   },
   age: {
@@ -12,6 +11,7 @@ const userSchemaDef = {
   },
   email: {
     type: String,
+    unique: true,
     required: true
   },
   acquaintances: [{

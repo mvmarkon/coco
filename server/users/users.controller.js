@@ -19,4 +19,13 @@ router.route('/').get(async (_, response) => {
   return response.status(200).json(users);
 });
 
+router.route('/acquaintances/:id').get(async (request, response) => {
+  try {
+    const user = await User.find({ _id: request.params.id });
+    return response.status(200).json(user.acquaintances);
+  } catch (error) {
+    return response.status(404).send(error);
+  }
+});
+
 export default router;

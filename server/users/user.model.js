@@ -10,6 +10,17 @@ const userSchemaDef = {
     type: Number,
     required: true,
   },
+  email: {
+    type: String,
+    required: true
+  },
+  acquaintances: [{
+    type: Schema.Types.ObjectId, ref: 'User'
+  }],
+  healthy: {
+    type: Boolean,
+    default: true
+  }
 };
 
 const userSchema = new Schema(userSchemaDef);

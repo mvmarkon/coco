@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import itemsController from './items/items.controller';
 import usersController from './users/users.controller';
 import eventsController from './events/events.controller';
+import protocolsController from './protocols/protocols.controller';
 
 // Create the express application
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 app.use('/api/items', itemsController);
 app.use('/api/users', usersController);
 app.use('/api/events', eventsController);
+app.use('/api/protocols', protocolsController);
 
 // Declare the path to frontend's static assets
 app.use(express.static(resolve('..', 'build')));

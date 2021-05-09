@@ -1,6 +1,10 @@
 import { Schema, model } from 'mongoose';
 
 const protocolSchemaDef = {
+	name: {
+		type: String,
+		required: true
+	},
   allowedHourFrom: {
     type: Number, // Se guardan en minutos de 0 a 1440
 	},
@@ -12,6 +16,9 @@ const protocolSchemaDef = {
 	}],
 	maxPeopleAllowed:{
 		type: Number
+	},
+	description: {
+		type: String
 	}
 };
 

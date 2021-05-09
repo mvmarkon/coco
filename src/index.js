@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.css';
-import App from './js/CoCo.jsx';
+import CoCo from './js/CoCo.jsx';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <App />, 
+    <CoCo />, 
     document.getElementById('CoCo')
 );
 

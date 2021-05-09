@@ -1,0 +1,1 @@
+"use strict";var _mongoose=require("mongoose");Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;const itemSchemaDef={name:{type:String,required:!0},value:{type:Number,required:!0}},itemSchema=new _mongoose.Schema(itemSchemaDef);var _default=(0,_mongoose.model)("Item",itemSchema);exports.default=_default;

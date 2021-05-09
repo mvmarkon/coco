@@ -1,13 +1,9 @@
 import React, { useState }  from 'react';
 import '../css/EventForm.css';
-import {useHistory} from "react-router-dom";
 
-const eventData = {name: '', date: '', protocols: '', participants: ''}
 const initialData = {name: 'Insertar nombre de evento', date: '', protocols: 'Los protocolos', participants: 'Agregar participantes'}
 
 const EventForm = () => {
-    const history = useHistory();
-
     const [eventData, setEventData] = useState(initialData);
     
     const handleEventChange = (event) => {
@@ -18,21 +14,32 @@ const EventForm = () => {
         });
     };
 
+    const handleF = async (event) =>{
+      return await fetch('/api/events/')
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => console.log('Success:', response));                              
+    }
+
     const handleConfirm = (event) =>{
-        event.preventDefault();
-            /*register(eventData)
-            .then((response) => {
-                    localStorage.setItem("token", response.headers.authorization);
-                    localStorage.setItem("userId", JSON.stringify(response.headers.userid));
-                    history.push("/Events"); console.log(eventData); 
-                })
-            .catch(() => {
-                console.log(handleRegisterError(eventData))
-                if (handleRegisterError(eventData)){
-                    setRegisterUsedError("ErrorVisible")
-                }
-            })*/
-      }
+      postData('/api/events/', eventData)
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => console.log('Success:', response));                              
+    }
+
+    const postData = (url, data) =>{ 
+      console.log(data)
+        const response = fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          /*headers:{
+            'Content-Type': 'application/json'
+          }*/
+        })
+      console.log(response)
+      return response;
+    }
 
     const handleCancel = (event) =>{
         event.preventDefault();
@@ -63,7 +70,7 @@ const EventForm = () => {
                     </div>
             </form>
             <div className = "ButtonLeft"><button className="Button ButtonLeft" type="submit" onClick = {handleConfirm}>Confirmar</button></div>
-            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleCancel}>Cancelar</button></div>
+            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleF}>Cancelar</button></div>
         </div>
     );
 }

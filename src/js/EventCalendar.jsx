@@ -7,17 +7,16 @@ const EventCalendar = () => {
     console.log(upcomingEvents)
     useEffect(() => {
         const fetchData = async () => {
-            const events = await fetch('http://localhost:9000/api/events/organizer/60967a887dcec85999f5ed1d')
+            const events = await fetch('/api/events/organizer/60967a887dcec85999f5ed1d')
                         .then((res)=>res.json())
-            const users = await fetch("http://localhost:9000/api/users").then(res =>res.json())
+            const users = await fetch("/api/users").then(res =>res.json())
             const evts = events.map(evt=>{
-            const organizerId = evt.organizer
-            const participantsId = evt.participants
-            const organizer= users.find(user=>organizerId === user._id )
-            const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
-            
-            return {...evt,organizer,participants}
-        })
+                const organizerId = evt.organizer
+                const participantsId = evt.participants
+                const organizer= users.find(user=>organizerId === user._id )
+                const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
+                return {...evt,organizer,participants}
+            })
 
         setUpcomingEvents(evts)
                                         

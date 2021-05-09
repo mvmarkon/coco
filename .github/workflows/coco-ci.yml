@@ -2,7 +2,9 @@ name: coco-ci
 
 on:
   push:
-    branches: [ main, wip-tests ]
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
   build:

@@ -4,7 +4,7 @@ import '../css/CoCo.css';
 const Start = () => {
   return (
     <header className="App-header">
-        HOME
+        HOME            
 {/*        <img src={logo} className="App-logo" alt="logo" />
         <p>
             Edit <code>src/App.js</code> and save to reload.

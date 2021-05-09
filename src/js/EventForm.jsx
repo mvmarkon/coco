@@ -14,22 +14,15 @@ const EventForm = () => {
         });
     };
 
-    const handleF = async (event) =>{
-      return await fetch('/api/events/')
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => console.log('Success:', response));                              
-    }
-
     const handleConfirm = (event) =>{
-      postData('/api/events/', eventData)
+      postData("/api/events", eventData)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
       .then(response => console.log('Success:', response));                              
     }
 
     const postData = (url, data) =>{ 
-      console.log(data)
+      console.log(url)
         const response = fetch(url, {
           method: 'POST',
           body: JSON.stringify(data),
@@ -70,7 +63,7 @@ const EventForm = () => {
                     </div>
             </form>
             <div className = "ButtonLeft"><button className="Button ButtonLeft" type="submit" onClick = {handleConfirm}>Confirmar</button></div>
-            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleF}>Cancelar</button></div>
+            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleCancel}>Cancelar</button></div>
         </div>
     );
 }

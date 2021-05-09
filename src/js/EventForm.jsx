@@ -1,11 +1,22 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import '../css/EventForm.css';
 
-const initialData = {name: 'Insertar nombre de evento', date: '', protocols: 'Los protocolos', participants: 'Agregar participantes'}
+const initialData = {eventName: 'Insertar nombre de evento', date: '', protocols: 'Los protocolos', participants: 'Agregar participantes'}
 
 const EventForm = () => {
-    const [eventData, setEventData] = useState(initialData);
-    
+
+  const [eventData, setEventData] = useState(initialData);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const usr = await fetch('/api/users/60967a887dcec85999f5ed1d')
+        .then((res) => res.json())
+      setUser(usr)
+    }
+    fetchData()
+  }, [setUser]);
+
     const handleEventChange = (event) => {
         event.preventDefault();
         setEventData({
@@ -14,15 +25,10 @@ const EventForm = () => {
         });
     };
 
-    const handleF = async (event) =>{
-      return await fetch('/api/events/')
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => console.log('Success:', response));                              
-    }
-
     const handleConfirm = (event) =>{
-      postData('/api/events/', eventData)
+      eventData['organizer'] = user._id;
+      eventData['participants'] = user.acquaintances;
+      postData('api/events/', eventData)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
       .then(response => console.log('Success:', response));                              
@@ -33,9 +39,9 @@ const EventForm = () => {
         const response = fetch(url, {
           method: 'POST',
           body: JSON.stringify(data),
-          /*headers:{
+          headers:{
             'Content-Type': 'application/json'
-          }*/
+          }
         })
       console.log(response)
       return response;
@@ -53,7 +59,7 @@ const EventForm = () => {
                     <div className = "EventForm">
                         <div className="form-group">
                             <label htmlFor="name">Nombre</label><br/>
-                            <input required type="text" name="name" value={eventData.name} onChange={handleEventChange} className="form-control"/>
+                            <input required type="text" name="name" value={eventData.eventName} onChange={handleEventChange} className="form-control"/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="date">Fecha</label><br/>
@@ -70,7 +76,7 @@ const EventForm = () => {
                     </div>
             </form>
             <div className = "ButtonLeft"><button className="Button ButtonLeft" type="submit" onClick = {handleConfirm}>Confirmar</button></div>
-            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleF}>Cancelar</button></div>
+            <div className = "ButtonRight"><button className="Button ButtonRight" type="submit" onClick = {handleCancel}>Cancelar</button></div>
         </div>
     );
 }

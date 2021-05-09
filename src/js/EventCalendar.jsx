@@ -1,36 +1,39 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import '../css/EventCalendar.css'
 
-const EventCalendar = () => {
+const EventCalendar = () => {    
+    const [upcomingEvents,setUpcomingEvents]= useState([])
+
+    console.log(upcomingEvents)
+    useEffect(() => {
+        const fetchData = async () => {
+            const events = await fetch('http://localhost:9000/api/events/organizer/60967a887dcec85999f5ed1d')
+                        .then((res)=>res.json())
+            const users = await fetch("http://localhost:9000/api/users").then(res =>res.json())
+            const evts = events.map(evt=>{
+            const organizerId = evt.organizer
+            const participantsId = evt.participants
+            const organizer= users.find(user=>organizerId === user._id )
+            const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
+            
+            return {...evt,organizer,participants}
+        })
+
+        setUpcomingEvents(evts)
+                                        
+        }
+        
+        fetchData()
+
+    }
     
-    // const [upcomingEvents,setUpcomingEvents]= useState()
-
-
-    const eventOne = {
-        eventName: 'Primer evento',
-        protocols: 'Protocolos del evento',
-        date: new Date().toLocaleDateString(),
-        duration: 4,
-        participants: [{name:'user1',edad:24},{name:'user2',edad:27}]
-    }
-
-    const eventTwo= {
-        eventName: 'Segundo evento',
-        protocols: 'Protocolos del evento',
-        date: new Date().toLocaleDateString(),
-        duration: 1,
-        participants: [{name:'user3',edad:26},{name:'user4',edad:40}]
-    }
-
-
-
-    const events = [eventOne,eventTwo]
+    
+    , [setUpcomingEvents])
 
     return (
-
         <>
         {
-            events.map( event => {
+            upcomingEvents.map( event => {
                 return (
                 <div className="event-container">
                     <p className="event-section event-title">
@@ -43,10 +46,9 @@ const EventCalendar = () => {
                         <time>
                             Fecha: {event.date}
                         </time>
-                        <br/>
-                        <span>Duracion(hs): {event.duration}</span> 
                     </div>
                     <div className="event-section event-guests-info">
+                        <h3>Organizador :</h3><span>{event.organizer.name}</span>
                         <h4 >Invitados</h4>               
                         <ul>
                             {event.participants.map(participant=>

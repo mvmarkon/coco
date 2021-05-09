@@ -4,12 +4,11 @@ import '../css/EventCalendar.css'
 const EventCalendar = () => {    
     const [upcomingEvents,setUpcomingEvents]= useState([])
 
-    console.log(upcomingEvents)
     useEffect(() => {
         const fetchData = async () => {
-            const events = await fetch('http://localhost:9000/api/events/organizer/60967a887dcec85999f5ed1d')
+            const events = await fetch('api/events/organizer/60967a887dcec85999f5ed1d')
                         .then((res)=>res.json())
-            const users = await fetch("http://localhost:9000/api/users").then(res =>res.json())
+            const users = await fetch("api/users").then(res =>res.json())
             const evts = events.map(evt=>{
             const organizerId = evt.organizer
             const participantsId = evt.participants
@@ -22,7 +21,7 @@ const EventCalendar = () => {
         setUpcomingEvents(evts)
                                         
         }
-        
+
         fetchData()
 
     }

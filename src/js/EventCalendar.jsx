@@ -10,12 +10,11 @@ const EventCalendar = () => {
                         .then((res)=>res.json())
             const users = await fetch("api/users").then(res =>res.json())
             const evts = events.map(evt=>{
-                const eventId = id
+                const eventId = evt._id
                 const organizerId = evt.organizer
                 const participantsId = evt.participants
                 const organizer= users.find(user=>organizerId === user._id )
                 const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
-                id += 1
                 return {...evt,organizer,participants}
             })
 
@@ -35,7 +34,7 @@ const EventCalendar = () => {
         {
             upcomingEvents.map( event => {
                 return (
-                <div className="event-container" key={event.id}>
+                <div className="event-container" key={event._id}>
                     <p className="event-section event-title">
                         {event.eventName}
                     </p>

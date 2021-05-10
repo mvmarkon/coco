@@ -58,8 +58,8 @@ const EventForm = () => {
                 <div className="FormTitle">Crea tu evento</div>
                     <div className = "EventForm">
                         <div className="form-group">
-                            <label htmlFor="name">Nombre</label><br/>
-                            <input required type="text" name="name" value={eventData.eventName} onChange={handleEventChange} className="form-control"/>
+                            <label htmlFor="eventName">Nombre</label><br/>
+                            <input required type="text" name="eventName" value={eventData.eventName} onChange={handleEventChange} className="form-control"/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="date">Fecha</label><br/>

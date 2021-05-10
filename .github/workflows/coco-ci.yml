@@ -1,0 +1,20 @@
+name: coco-ci
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '15.14'
+      - run: yarn install
+      - run: yarn test-client
+      - run: yarn test-server

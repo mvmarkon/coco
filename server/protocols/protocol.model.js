@@ -1,6 +1,10 @@
 import { Schema, model } from 'mongoose';
 
 const protocolSchemaDef = {
+	active: {
+		type: Boolean,
+    default: true
+	},
 	name: {
 		type: String,
 		required: true
@@ -12,11 +16,8 @@ const protocolSchemaDef = {
     type: Number, // Se guardan en minutos de 0 a 1440
   },
   allowedPlaces: [{
-    type: String,
+    type: Object,
 	}],
-	maxPeopleAllowed:{
-		type: Number
-	},
 	description: {
 		type: String
 	}

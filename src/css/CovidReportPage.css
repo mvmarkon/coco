@@ -1,0 +1,6 @@
+.divisor {
+    display: flex;
+    padding: 5em;
+    align-items: flex-start;
+    justify-content: space-around;
+}

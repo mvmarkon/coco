@@ -3,10 +3,20 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../app';
 import Event from './event.model';
+import Protocol from '../protocols/protocol.model';
+
+const protocol = {
+	active: true,
+	name: 'Primer protocolo',
+	allowedHourFrom: 480, //Serian las 8 hs
+	allowedHourTo: 1200, // Serian las 20 hs
+	allowedPlaces: [{"Plaza": 10}],
+	description: 'Descripción muy descriptiva'
+}
 
 const validEventData = {
 	eventName: 'primer evento',
-	protocols: 'protocolos',
+	protocols: [],
 	date: new Date(),
 	organizer: mongoose.Types.ObjectId()
 }
@@ -31,12 +41,15 @@ describe('event model tests', () => {
 	});
 
 	it('should persist an event', async () => {
+		const newProtocol = new Protocol(protocol);
+		const savedProtocol = await newProtocol.save();
+		validEventData.protocol = savedProtocol;
 		const newEvent = new Event(validEventData);
 		const saved = await newEvent.save();
 		expect(saved.id).toBeDefined();
 		expect(saved.organizer).toBe(validEventData.organizer);
 		expect(saved.eventName).toBe(validEventData.eventName);
-		expect(saved.protocols).toBe(validEventData.protocols);
+		expect(saved.protocol).toBe(savedProtocol);
 		expect(saved.date).toBe(validEventData.date);
 	});
 
@@ -52,7 +65,6 @@ describe('event model tests', () => {
 		expect(failed).toBeInstanceOf(mongoose.Error.ValidationError);
 		expect(failed.errors.eventName).toBeDefined();
 		expect(failed.errors.date).toBeDefined();
-		expect(failed.errors.protocols).toBeDefined();
 	});
 })
 
@@ -83,7 +95,7 @@ describe('api/events tests', () => {
 		expect(postResponse.status).toBe(200);
 		expect(postResponse.body._id).toBeDefined();
 		expect(postResponse.body.eventName).toEqual(validEventData.eventName);
-		expect(postResponse.body.protocols).toEqual(validEventData.protocols);
+		expect(postResponse.body.protocol).toBeDefined();
 		expect(Date(postResponse.body.date)).toEqual(Date(validEventData.date));
 
     const getResponse = await request(app).get('/api/events');

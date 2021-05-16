@@ -6,10 +6,13 @@ import '../css/CovidReportPage.css'
 const CovidReportPage = () => {
 
     return (
+        <>
+        <h1>Reporte covid</h1>
         <div className="divisor">
             <FormCloseContact />
             <FormPossiblePositive />
         </div>
+        </>
     )
 }
 

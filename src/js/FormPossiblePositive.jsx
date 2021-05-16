@@ -21,6 +21,7 @@ const FormPossibleContact = () => {
     const [onsetSympstomsDate,setOnsetSympstomsDate] = useState(new Date().toUTCString())
     const [syntomsSelected,setSyntomsSelected] = useState([])
     const [bodyTemperature,setBodyTemperature ] = useState(35)
+    const [notifySuccess,setNotifySuccess] = useState(false)
 
     
     const handleSubmit = (e) => {
@@ -28,6 +29,17 @@ const FormPossibleContact = () => {
         console.log(onsetSympstomsDate)
         console.log(bodyTemperature)
         console.log(syntomsSelected)
+        fetch('api/users/acquaintances/60967a887dcec85999f5ed1d').then(
+            res=> res.json()
+        ).then(acquaintances=>
+            fetch('api/notifications',{
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body:JSON.stringify({notify_to:acquaintances,notified:false,notificationName:'notify',date:new Date().toISOString(),description:'1',notifier:'60967a887dcec85999f5ed1d'})
+            }).then(res=> res.status===201 ? setNotifySuccess(true) : setNotifySuccess(false))
+            )
     }
 
     const handleTemperatureChange = (e) => {
@@ -59,7 +71,7 @@ const FormPossibleContact = () => {
                 <label htmlFor="onset_syntoms_date">
                     Fecha de comienzo de sintomas:
                 </label>
-                <input type="date" name="onset_syntoms_date" onChange={handleDateChange} value={onsetSympstomsDate}
+                <input type="date" name="onset_syntoms_date" required onChange={handleDateChange} value={onsetSympstomsDate}
                 />
             </div>
             <div className="form_section">
@@ -82,10 +94,12 @@ const FormPossibleContact = () => {
                 </fieldset>
             </div>
             <div className="form_section btn_section">
-                <button className="submit_btn">
+                <button className="submit_btn" disabled={notifySuccess}>
                     Notificar a conocidos
                 </button>
             </div>
+        {notifySuccess ? <p>Notificacion exitosa</p> : null}   
+
         </form>
     )
 }

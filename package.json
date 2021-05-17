@@ -38,7 +38,6 @@
   "scripts": {
     "start-client": "react-scripts start",
     "build-client": "react-scripts build",
-    "test-client": "react-scripts test --coverage --watchAll=false",
     "serve": "cd build-server && node server.js",
     "start-server": "nodemon --exec babel-node server/server.js",
     "test-server": "jest --config=server/jest.config.js /server --coverage",

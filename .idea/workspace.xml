@@ -2,32 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1dac2234-43ea-483e-a9de-977ca31904e0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/server/notifications/notification.model.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/notifications/notifications.controller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/notifications/notifications.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/CovidReportPage.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/FormCloseContact.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/FormPossiblePositive.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/css/NotifyReportCovid.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/CovidReportPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/FormCloseContact.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/FormPossiblePositive.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/js/NotifyReportCovid.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build-server/notifications/notification.model.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build-server/notifications/notifications.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/build-server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-server/events/event.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/build-server/events/event.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-server/protocols/protocol.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/build-server/protocols/protocol.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-server/protocols/protocols.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/build-server/protocols/protocols.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-server/users/users.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/build-server/users/users.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/events/event.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/events/event.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/events/events.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/events/events.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/events/events.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/events/events.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/protocols/protocol.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/protocols/protocol.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/protocols/protocols.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/protocols/protocols.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/protocols/protocols.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/protocols/protocols.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/EventCalendar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/EventCalendar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/EventForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/EventForm.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/CoCo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/CoCo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/notifications/notifications.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/notifications/notifications.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/notifications/notifications.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/notifications/notifications.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/CovidReportPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/CovidReportPage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/EventCalendar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/EventCalendar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/js/EventForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/EventForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/Start.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/Start.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,11 +28,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1sYS33deuLGMc6iHGgi4hl5DpFO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -62,7 +56,7 @@
       <updated>1621047857369</updated>
       <workItem from="1621047861370" duration="1324000" />
       <workItem from="1621136186843" duration="1370000" />
-      <workItem from="1621178802529" duration="8970000" />
+      <workItem from="1621178802529" duration="11165000" />
     </task>
     <servers />
   </component>
@@ -80,5 +74,8 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

@@ -6,9 +6,13 @@ const router = Router();
 
 router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
-    const notification = new Notification(request.body);
-    const savedNotif = await notification.save();
-    return response.status(201).json(savedNotif);
+    request.body.notify_to.forEach(async user => {
+      let notifyData = request.body;
+      notifyData.notify_to = [user]
+      const notification = new Notification(notifyData);
+      const savedNotif = await notification.save();
+    });
+    return response.status(201).json('OK');
   } catch (error) {
     return response.status(400).send(error);
   }

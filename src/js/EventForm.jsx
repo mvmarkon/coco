@@ -129,13 +129,6 @@ const EventForm = () => {
       data.hourTo = timeToMin(eventData.hourTo)
       data.hourFrom = timeToMin(eventData.hourFrom)
       postData('api/events/', data)
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => {
-        console.log('Success:', response)
-        goToCalendar() 
-      }); 
-             
   }
 
   const goToCalendar = (event) => {
@@ -148,6 +141,7 @@ const EventForm = () => {
 
   const postData = (url, data) =>{ 
       console.log(data)
+      debugger;
         const response = fetch(url, {
           method: 'POST',
           body: JSON.stringify(data),
@@ -155,6 +149,11 @@ const EventForm = () => {
             'Content-Type': 'application/json'
           }
         })
+        .then(res => {
+          console.log('Success:', response)
+          goToCalendar() 
+          res.json()})
+        .catch(error => console.error('Error:', error))
       console.log(response)
       debugger;
       return response;

@@ -95,9 +95,7 @@ describe('api/notifications tests', () => {
 		fullNotifData.notify_to.push(user_saved._id);
 		const postResponse = await request(app).post('/api/notifications').send(fullNotifData);
 		expect(postResponse.status).toBe(201);
-		expect(postResponse.body._id).toBeDefined();
-		expect(postResponse.body.notificationName).toEqual(fullNotifData.notificationName);
-		expect(Date(postResponse.body.date)).toEqual(Date(fullNotifData.date));
+		expect(postResponse.body).toBe('OK');
 	});
 
 	it('should return all notifications for a user on a GET request received with user id', async () => {

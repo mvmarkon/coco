@@ -9,7 +9,7 @@ const protocolData = {
 	name: 'Primer protocolo',
 	allowedHourFrom: 480, //Serian las 8 hs
 	allowedHourTo: 1200, // Serian las 20 hs
-  	allowedPlaces: [{"Plaza": 10}],
+  allowedPlaces: [{"Plaza": 10}],
 	description: 'Descripción muy descriptiva'
 }
 

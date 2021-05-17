@@ -1,10 +1,10 @@
 import React,{useEffect,useState} from 'react'
 import '../css/EventCalendar.css'
 
-// {place: {name: '', numberParticipants : 1}}
+// {place: {name: '', numberParticipants : 1}} 
 
 
-const EventCalendar = () => {
+const EventCalendar = () => {    
     const [upcomingEvents,setUpcomingEvents]= useState([])
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const EventCalendar = () => {
             const organizerId = evt.organizer
             const participantsId = evt.participants
             const organizer= users.find(user=>organizerId === user._id )
-            const participants= users.filter(user=>participantsId.some(participant=>user._id===participant))
+            const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
             console.log(events)
             return {...evt,organizer,participants}
         })
@@ -26,7 +26,7 @@ const EventCalendar = () => {
         }
 
         fetchData()
-
+        
     }
 
 

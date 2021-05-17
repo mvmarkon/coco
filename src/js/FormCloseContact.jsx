@@ -30,22 +30,22 @@ const FormCloseContact = () => {
                     'Content-type' : 'application/json'
                 },
                 body:JSON.stringify({notify_to:acquaintances,notified:false,notificationName:'notify',date:new Date().toISOString(),description:'1',notifier:'60967a887dcec85999f5ed1d'})
-            }).then(res=> {
-                        if (res.status===201)
+            }).then(res=> { 
+                        if (res.status===201) 
                             {
                                 setNotifySuccess(true)
                                 console.log(`Notificacion enviada a los usuarios ${acquaintances}`)
-                            }
-                        else
+                            } 
+                        else 
                             {
                                 console.log('Ocurrio un error el notificar, por favor intentelo mas tarde')
                             }
                         }))
-
+            
     }
 
     return  (
-        <>
+        <> 
     <form className="form_close_contact" onSubmit={handleSubmit}>
     <h3>Notificar contacto cercano</h3>
 
@@ -71,9 +71,9 @@ const FormCloseContact = () => {
             </button>
         </div>
         {notifySuccess ? <p>Notificacion exitosa</p> : null}
-
+           
     </form>
-    </>
+    </> 
     )
 }
 

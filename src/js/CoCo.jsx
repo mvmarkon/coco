@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../css/CoCo.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  //Redirect
 } from "react-router-dom";
 
 import Start from "./Start";

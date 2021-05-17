@@ -2,6 +2,7 @@
     width:40%;
     border: 1px solid black;
     padding:1em;
+    text-align: center;
 }
 
 .form_possible_contact label {
@@ -17,8 +18,15 @@
     text-align: center;
 }
 
+.syntoms {
+    text-align: left;
+}
+
 .submit_btn {
     width:80%;
-    height: 2em;
+    height: 3em;
     font-size: 1em;
+    background-color: cornflowerblue;
+    color:white;
+    border-radius: 20px;
 }

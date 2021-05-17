@@ -6,7 +6,9 @@ const FormCloseContact = () => {
 
     const [contactDate,setContactDate] = useState(new Date().toISOString())
     const [stateCovid,setStateCovid] = useState('1')
-    
+    const [notifySuccess,setNotifySuccess] = useState(false)
+
+
     const handleDateChange = (e)=>{
         setContactDate(e.target.value)
     }
@@ -19,10 +21,34 @@ const FormCloseContact = () => {
         e.preventDefault()
         console.log(contactDate)
         console.log(stateCovid)
+        fetch('api/users/acquaintances/60967a887dcec85999f5ed1d').then(
+            res=> res.json()
+        ).then(acquaintances=>
+            fetch('api/notifications',{
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body:JSON.stringify({notify_to:acquaintances,notified:false,notificationName:'notify',date:new Date().toISOString(),description:'1',notifier:'60967a887dcec85999f5ed1d'})
+            }).then(res=> {
+                        if (res.status===201)
+                            {
+                                setNotifySuccess(true)
+                                console.log(`Notificacion enviada a los usuarios ${acquaintances}`)
+                            }
+                        else
+                            {
+                                console.log('Ocurrio un error el notificar, por favor intentelo mas tarde')
+                            }
+                        }))
+
     }
 
-    return  ( 
+    return  (
+        <>
     <form className="form_close_contact" onSubmit={handleSubmit}>
+    <h3>Notificar contacto cercano</h3>
+
         <div className="form_section">
             <label htmlFor="contact_date">
                 Fecha de contacto
@@ -40,11 +66,14 @@ const FormCloseContact = () => {
         </div>  
         <div className="form_section">
 
-            <button className="submit-btn">
+            <button className="submit-btn" disabled={notifySuccess}>
                 Notificar a conocidos
             </button>
         </div>
-    </form>    
+        {notifySuccess ? <p>Notificacion exitosa</p> : null}
+
+    </form>
+    </>
     )
 }
 

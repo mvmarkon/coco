@@ -1,40 +1,152 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect,  }  from 'react';
 import '../css/EventForm.css';
+import {useHistory} from "react-router-dom";
+import TimePicker from 'react-time-picker'
 
-const initialData = {eventName: 'Insertar nombre de evento', date: '', protocols: 'Los protocolos', participants: 'Agregar participantes'}
+const initialData = {organizer: '', eventName: 'Insertar nombre de evento', date: '', hourFrom: '00:00', hourTo: '00:00',  place: {name: '', numberParticipants : 1}, participants: [], description: ''}
 
 const EventForm = () => {
 
+  const history = useHistory();
   const [eventData, setEventData] = useState(initialData);
   const [user, setUser] = useState({});
+  const [protocols, setProtocols] = useState({allowedHourFrom: 0, allowedHourTo: 1440, allowedPlaces: [{}]})
+  const [acquaintances, setAcquaintances] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [limitParticipants, setLimitParticipants] = useState("Elegir Lugar");
+  const [onLimit, setLimit] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const usr = await fetch('/api/users/60967a887dcec85999f5ed1d')
+        .then((res) => res.json()) 
+      const prt = await fetch('/api/protocols/active')
         .then((res) => res.json())
+      setAcquaintances(usr.acquaintances)
+      setParticipants([])
+      setProtocols(prt)
       setUser(usr)
     }
     fetchData()
   }, [setUser]);
 
-    const handleEventChange = (event) => {
-        event.preventDefault();
-        setEventData({
-          ...(eventData),
-          [event.target.name]: event.target.value,
-        });
-    };
+  const handleEventChange = (event) =>{
+    event.preventDefault();
+    setEventData({
+      ...(eventData),
+      [event.target.name]: event.target.value,
+    });
+  };
 
-    const handleConfirm = (event) =>{
-      eventData['organizer'] = user._id;
-      eventData['participants'] = user.acquaintances;
-      postData('api/events/', eventData)
+  const handleHourFrom = (event) =>{
+    console.log(event)
+    setEventData({
+      ...(eventData),
+      hourFrom: event,
+    });
+    console.log(eventData.hourFrom)
+  };
+
+  const handleHourTo = (event) =>{
+    setEventData({
+      ...(eventData),
+      hourTo: event,
+    });
+    console.log(eventData.hourTo)
+  };
+
+  const timeToMin = (time) =>{
+    var hourM = time
+    if (time == null){
+      hourM = '00:00'
+    }
+    hourM = hourM.split(':')
+    return (+hourM[0])*60 + (+hourM[1])
+  }
+
+  const minToTime = (min) =>{
+    var limitH = min
+    limitH = Math.floor(limitH / 60);
+    var limitM = (min % 60)
+    return limitH+':'+limitM
+  }
+
+  const handleLimit = (event) =>{
+    clearParticipants()
+    setLimitParticipants(event.target.value)
+    eventData['place'] = {name: event.target.name, numberParticipants: 1}
+  }
+
+  const clearParticipants  = () =>{
+    var newA = acquaintances.concat(participants)
+    setAcquaintances(newA) 
+    setParticipants([])
+  }
+
+  const addParticipant = (event) =>{
+    var changeIndex = acquaintances.indexOf(event.target.name)
+    var newC = acquaintances
+    newC.splice(changeIndex, 1)
+    
+    var newP = participants.concat([event.target.name])
+
+    setAcquaintances(newC)
+    setParticipants(newP)
+
+    checkLimit()
+  }
+
+  const checkLimit = () =>{
+    if (participants.length >= limitParticipants - 2){
+      setLimit(true)
+    } else{
+      setLimit(false)
+    }
+  }
+
+  const quitParticipant = (event) =>{
+      var changeIndex = participants.indexOf(event.target.name)
+      var newP = participants
+      newP.splice(changeIndex, 1)
+
+      var newC = acquaintances.concat([event.target.name])
+      //newC.push(event.target.name)
+
+      setParticipants(newP)
+      setAcquaintances(newC)
+
+      checkLimit()
+  }
+
+  const handleConfirm = (event) =>{
+      setEventData({
+        ...(eventData),
+      })
+      var data = Object.assign({}, eventData)
+      data['organizer'] = user._id
+      data['place'] = {name: eventData.place.name, numberParticipants: participants.length + 1}
+      data['participants'] = participants
+      data.hourTo = timeToMin(eventData.hourTo)
+      data.hourFrom = timeToMin(eventData.hourFrom)
+      postData('api/events/', data)
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
-      .then(response => console.log('Success:', response));                              
-    }
+      .then(response => {
+        console.log('Success:', response)
+        goToCalendar() 
+      }); 
+             
+  }
 
-    const postData = (url, data) =>{ 
+  const goToCalendar = (event) => {
+      fetch('api/events/organizer/'+ user._id)
+      .then(()=>{
+          history.push("/EventCalendar")
+          window.location.reload()
+      })
+  }
+
+  const postData = (url, data) =>{ 
       console.log(data)
         const response = fetch(url, {
           method: 'POST',
@@ -44,15 +156,16 @@ const EventForm = () => {
           }
         })
       console.log(response)
+      debugger;
       return response;
-    }
+  }
 
-    const handleCancel = (event) =>{
+  const handleCancel = (event) =>{
         event.preventDefault();
         setEventData(initialData);
-    }
+  }
 
-    return (
+  return (
         <div className="box Container">
             <form className="Form" onSubmit = {handleConfirm} >
                 <div className="FormTitle">Crea tu evento</div>
@@ -66,12 +179,50 @@ const EventForm = () => {
                             <input required type="date" name="date" value={eventData.date} onChange={handleEventChange} className="form-control"/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="protocols">Protocolos</label><br/>
-                            <input required type="text" name="protocols" value={eventData.protocols} onChange={handleEventChange} className="form-control" />
+                          <label htmlFor="date">Hora Inicio</label><br/>
+                          <TimePicker minTime={minToTime(protocols.allowedHourFrom)} maxTime={minToTime(protocols.allowedHourTo)} name="hourFrom" value={eventData.hourFrom} onChange={handleHourFrom}/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="participants">Participantes</label><br/>
-                            <input type="text" name="participantes" value={eventData.participants} onChange={handleEventChange} className="form-control" />
+                          <label htmlFor="date">Hora Fin</label><br/>
+                          <TimePicker minTime={minToTime(protocols.allowedHourFrom)} maxTime={minToTime(protocols.allowedHourTo)} name="hourTo" value={eventData.hourTo} onChange={handleHourTo}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="protocols">Lugar permitido</label><br/>
+                            <div className="radio">
+                              {protocols.allowedPlaces.map(p =>
+                              <div>
+                                  <input type="radio" key={p.name} name={p.name} value = {p.limit} onClick={handleLimit}/>
+                                  <label>{p.name}</label>
+                              </div>
+                            )}
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="dropdown">
+                              <button className="dropbtn">Conocidos</button>
+                              <div className="dropdown-content">
+                                {acquaintances.map(a=>
+                                  <button key = {a} onClick ={addParticipant} name = {a} disabled = {onLimit}>
+                                    {a}                            
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                        </div>
+                        <div className="form-group">    
+                          <label htmlFor="Participants">Participants ({limitParticipants})</label><br/>
+                            <button key = {user._id} disabled>
+                              {user._id}                            
+                            </button>
+                            {participants.map(p=>
+                              <button key = {p} onClick = {quitParticipant} name = {p}>
+                                {p}                            
+                              </button>
+                            )}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="eventName">Descripcion</label><br/>
+                            <input required type="text" name="description" value={eventData.description} onChange={handleEventChange} className="form-control"/>
                         </div>
                     </div>
             </form>

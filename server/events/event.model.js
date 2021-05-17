@@ -15,9 +15,9 @@ const eventSchemaDef = {
 	participants: [{
 		type: Schema.Types.ObjectId, ref: 'User'
 	}],
-  protocols: {
-    type: String,
-    required: true,
+	protocol: {
+		type: Object,
+		required: true
 	},
 	organizer: {
 		type: Schema.Types.ObjectId, ref: 'User',

@@ -7,7 +7,7 @@ import Event from './event.model';
 
 const validEventData = {
 	eventName: 'primer evento',
-	date: new Date("2021-05-17"),
+	date: "2021-05-17",
 	hourFrom:1000,
 	hourTo:1060,
 	place:{name:"Plaza", numberParticipants: 10},
@@ -42,7 +42,7 @@ describe('event model tests', () => {
 		expect(saved.hourTo).toBe(validEventData.hourTo);
 		expect(saved.eventName).toBe(validEventData.eventName);
 		expect(saved.place).toBe(validEventData.place);
-		expect(saved.date).toBe(validEventData.date);
+		expect(JSON.stringify(saved.date).split('T')[0]).toContain(validEventData.date);
 	});
 
 	it('create event without required fields should fail', async () => {
@@ -97,7 +97,7 @@ describe('api/events tests', () => {
 		expect(JSON.stringify(participantNotification.body[0].notifier)).toContain(validEventData.organizer);
 		const getResponse = await request(app).get('/api/events');
 		expect(getResponse.status).toBe(200);
-    expect(getResponse.body[0]).toEqual(postResponse.body);
+    expect(getResponse.body[0]._id).toBe(postResponse.body._id);
 	});
 
 	it('should get user events', async () => {

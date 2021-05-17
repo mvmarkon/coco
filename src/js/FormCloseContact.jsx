@@ -38,6 +38,8 @@ const FormCloseContact = () => {
     return  (
         <> 
     <form className="form_close_contact" onSubmit={handleSubmit}>
+    <h3>Notificar contacto cercano</h3>
+
         <div className="form_section">
             <label htmlFor="contact_date">
                 Fecha de contacto

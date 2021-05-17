@@ -1,6 +1,7 @@
 import React from 'react'
 import FormCloseContact from './FormCloseContact'
 import FormPossiblePositive from './FormPossiblePositive'
+import NotifyReportCovid from './NotifyReportCovid'
 import '../css/CovidReportPage.css'
 
 const CovidReportPage = () => {
@@ -12,6 +13,7 @@ const CovidReportPage = () => {
             <FormCloseContact />
             <FormPossiblePositive />
         </div>
+        <NotifyReportCovid/>
         </>
     )
 }

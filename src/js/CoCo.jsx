@@ -10,7 +10,7 @@ import {
 import Start from "./Start";
 import EventForm from "./EventForm";
 import EventCalendar from "./EventCalendar";
-import CovidReportPage from "./CovidReportPage"
+import CovidReportPage from "./CovidReportPage";
 
 const CoCo = () => {
   /*const [users, setUsers] = useState();

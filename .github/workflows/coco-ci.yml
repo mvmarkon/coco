@@ -16,4 +16,5 @@ jobs:
         with:
           node-version: '15.14'
       - run: yarn install
+      - run: yarn test-client
       - run: yarn test-server

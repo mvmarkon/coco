@@ -72,6 +72,7 @@ const EventCalendar = () => {
                         </ul>
                     </div>
                     <div className="event-section event-last-section">
+                    <h4>Descripcion:</h4>
                             { event.description }
                     </div>
                 </div>)

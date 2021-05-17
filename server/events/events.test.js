@@ -3,21 +3,14 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../app';
 import Event from './event.model';
-import Protocol from '../protocols/protocol.model';
 
-const protocol = {
-	active: true,
-	name: 'Primer protocolo',
-	allowedHourFrom: 480, //Serian las 8 hs
-	allowedHourTo: 1200, // Serian las 20 hs
-	allowedPlaces: [{"Plaza": 10}],
-	description: 'Descripción muy descriptiva'
-}
 
 const validEventData = {
 	eventName: 'primer evento',
-	protocols: [],
-	date: new Date(),
+	date: new Date("2021-05-17"),
+	hourFrom:1000,
+	hourTo:1060,
+	place:{name:"Plaza", numberParticipants: 10},
 	organizer: mongoose.Types.ObjectId()
 }
 
@@ -41,15 +34,14 @@ describe('event model tests', () => {
 	});
 
 	it('should persist an event', async () => {
-		const newProtocol = new Protocol(protocol);
-		const savedProtocol = await newProtocol.save();
-		validEventData.protocol = savedProtocol;
 		const newEvent = new Event(validEventData);
 		const saved = await newEvent.save();
 		expect(saved.id).toBeDefined();
 		expect(saved.organizer).toBe(validEventData.organizer);
+		expect(saved.hourFrom).toBe(validEventData.hourFrom);
+		expect(saved.hourTo).toBe(validEventData.hourTo);
 		expect(saved.eventName).toBe(validEventData.eventName);
-		expect(saved.protocol).toBe(savedProtocol);
+		expect(saved.place).toBe(validEventData.place);
 		expect(saved.date).toBe(validEventData.date);
 	});
 
@@ -91,14 +83,19 @@ describe('api/events tests', () => {
   });
 
 	it('should post and get an event', async () => {
-    const postResponse = await request(app).post('/api/events').send(validEventData);
+		const evData = validEventData;
+		evData['participants'] = [mongoose.Types.ObjectId()];
+		const postResponse = await request(app).post('/api/events').send(evData);
 		expect(postResponse.status).toBe(200);
 		expect(postResponse.body._id).toBeDefined();
 		expect(postResponse.body.eventName).toEqual(validEventData.eventName);
-		expect(postResponse.body.protocol).toBeDefined();
+		expect(postResponse.body.place).toBeDefined();
 		expect(Date(postResponse.body.date)).toEqual(Date(validEventData.date));
 
-    const getResponse = await request(app).get('/api/events');
+		const participantNotification = await request(app).get('/api/notifications/'+ evData['participants'][0])
+		expect(participantNotification.body.length).toBe(1);
+		expect(JSON.stringify(participantNotification.body[0].notifier)).toContain(validEventData.organizer);
+		const getResponse = await request(app).get('/api/events');
 		expect(getResponse.status).toBe(200);
     expect(getResponse.body[0]).toEqual(postResponse.body);
 	});

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { User } from '../users/user.model';
+
 const eventSchemaDef = {
 	eventName: {
     type: String,
@@ -9,13 +9,18 @@ const eventSchemaDef = {
 		type: Date,
 		required: true
 	},
-	duration: {
-		type: Number
+	hourFrom: {
+		type: Number, // Se guardan en minutos de 0 a 1440
+		required: true
 	},
+	hourTo: {
+		type: Number, // Se guardan en minutos de 0 a 1440
+		required: true
+  },
 	participants: [{
 		type: Schema.Types.ObjectId, ref: 'User'
 	}],
-	protocol: {
+	place: {
 		type: Object,
 		required: true
 	},

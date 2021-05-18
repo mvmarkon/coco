@@ -98,7 +98,6 @@ const EventForm = () => {
   }
 
   const checkLimit = () =>{
-    console.log(participants)
     if (participants.length >= limitParticipants - 2){
       setLimit(true)
     } else{

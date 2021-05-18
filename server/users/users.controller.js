@@ -28,4 +28,13 @@ router.route('/acquaintances/:id').get(async (request, response) => {
   }
 });
 
+router.route('/:id').get(async (request, response) => {
+  try {
+    const user = await User.findById(request.params.id);
+    return response.status(200).json(user);
+  } catch (error) {
+    return response.status(404).send(error);
+  }
+});
+
 export default router;

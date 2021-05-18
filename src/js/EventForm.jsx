@@ -73,6 +73,7 @@ const EventForm = () => {
 
   const handleLimit = (event) =>{
     clearParticipants()
+    checkLimit()
     setLimitParticipants(event.target.value)
     eventData['place'] = {name: event.target.name, numberParticipants: 1}
   }
@@ -97,6 +98,7 @@ const EventForm = () => {
   }
 
   const checkLimit = () =>{
+    console.log(participants)
     if (participants.length >= limitParticipants - 2){
       setLimit(true)
     } else{

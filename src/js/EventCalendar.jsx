@@ -20,17 +20,10 @@ const EventCalendar = () => {
             console.log(events)
             return {...evt,organizer,participants}
         })
-
-        setUpcomingEvents(evts)
-                                        
+        setUpcomingEvents(evts)                             
         }
-
         fetchData()
-        
-    }
-
-
-    , [setUpcomingEvents])
+    }, [setUpcomingEvents])
 
     const minToTime = (min) =>{
         var limitH = min

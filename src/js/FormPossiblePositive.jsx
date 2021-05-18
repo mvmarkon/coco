@@ -72,7 +72,7 @@ const FormPossibleContact = () => {
 
 
     return  (
-        <> 
+        <>
         <form className="form_possible_contact" onSubmit={handleSubmit} >
         <h3>Notificar posible covid</h3>
             <div className="form_section">
@@ -106,7 +106,7 @@ const FormPossibleContact = () => {
                     Notificar a conocidos
                 </button>
             </div>
-        {notifySuccess ? <p>Notificacion exitosa</p> : null}   
+        {notifySuccess ? <p>Notificacion exitosa</p> : null}
 
         </form>
         </>

@@ -28,10 +28,17 @@ const EventCalendar = () => {
         fetchData()
         
     }
-    
-    
+
+
     , [setUpcomingEvents])
-    
+
+    const minToTime = (min) =>{
+        var limitH = min
+        limitH = Math.floor(limitH / 60);
+        var limitM = (min % 60)
+        return limitH+':'+limitM
+      }
+
     console.log(upcomingEvents)
     return (
         <div className='events-container'>
@@ -45,9 +52,9 @@ const EventCalendar = () => {
                     <div className="event-section event-date-info">
                         <time>
                             Fecha: {event.date.substring(0,10)}
-                            {/* <p>Horario</p>
-                            <span>Desde: {event.hourFrom} - </span>
-                            <span>Hasta: {event.hourTo}</span> */}
+                            <p>Horario</p>
+                            <span>Desde: {minToTime(event.hourFrom)} - </span>
+                            <span>Hasta: {minToTime(event.hourTo)}</span>
                         </time>
                         <p>Lugar: {event.place.name}</p>
                         <p>Cantidad maxima de invitados: {event.place.numberParticipants}</p>
@@ -55,7 +62,7 @@ const EventCalendar = () => {
                     </div>
                     <div className="event-section">
                         <h4>Organizador : <span>{event.organizer.name}</span></h4>
-                        <h4>Invitados</h4>               
+                        <h4>Invitados</h4>
                         <ul>
                             {event.participants.map(participant=>
                                 <li>
@@ -65,8 +72,8 @@ const EventCalendar = () => {
                         </ul>
                     </div>
                     <div className="event-section event-last-section">
-                            {/* { event.description } */}
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos, exercitationem accusamus? Eaque magni assumenda iure cupiditate necessitatibus sed quibusdam obcaecati, iste voluptatum voluptatem voluptas sunt maxime quidem earum, nam culpa!
+                    <h4>Descripcion:</h4>
+                            { event.description }
                     </div>
                 </div>)
             })

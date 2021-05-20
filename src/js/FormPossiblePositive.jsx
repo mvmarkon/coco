@@ -37,7 +37,13 @@ const FormPossibleContact = () => {
                 headers: {
                     'Content-type' : 'application/json'
                 },
-                body:JSON.stringify({notify_to:acquaintances,notified:false,notificationName:'notify',date:new Date().toISOString(),description:'1',notifier:'60967a887dcec85999f5ed1d'})
+                body:JSON.stringify({
+                    notify_to:acquaintances,
+                    notified:false,
+                    notificationName:'POSIBLE CASO DE COVID POSITIVO',
+                    date:new Date().toISOString(),
+                    description: JSON.stringify(syntomsSelected),
+                    notifier:'60967a887dcec85999f5ed1d'})
             }).then(res=> { 
                 if (res.status===201) 
                     {

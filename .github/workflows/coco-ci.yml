@@ -1,11 +1,7 @@
 name: coco-ci
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-
+  [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest

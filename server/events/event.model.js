@@ -27,6 +27,9 @@ const eventSchemaDef = {
 	organizer: {
 		type: Schema.Types.ObjectId, ref: 'User',
 		required: true,
+	},
+	description: {
+		type: String
 	}
 };
 

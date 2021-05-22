@@ -26,4 +26,6 @@ yarn-debug.log*
 yarn-error.log*
 
 /build-server
+build-server
 /.idea
+.idea

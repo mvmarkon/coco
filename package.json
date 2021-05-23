@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "jest-cucumber": "^3.0.1",
     "mongoose": "^5.9.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -40,6 +41,7 @@
     "serve": "cd build-server && node server.js",
     "start-server": "nodemon --exec babel-node server/server.js",
     "test-server": "jest --config=server/jest.config.js /server --coverage",
+    "atdd": "jest --config=server/jest.config.atdd.js /server",
     "build-server": "babel ./server --out-dir build-server --ignore \"server/coverage\",\"server/**/*.test.js\",\"server/jest.config.js\" --presets minify",
     "seed": "babel-node tools/seedDatabase.js"
   },

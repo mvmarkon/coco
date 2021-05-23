@@ -7,7 +7,8 @@ import User from './user.model';
 const userData = {
   name: 'John Doe',
   age: 34,
-  email: 'mail1@mail.com'
+  email: 'mail1@mail.com',
+  nickName: 'John'
 }
 
 describe('/api/users tests', () => {
@@ -67,6 +68,7 @@ describe('api/users/acquaintances tests', () => {
   it('should get user acquaintances', async () => {
     const user1 = new User({
       name:'Nombre1',
+      nickName: 'Nickname',
       age: 28,
       email: 'mail1@mail.com',
       acquaintances: [],

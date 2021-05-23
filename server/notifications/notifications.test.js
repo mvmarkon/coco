@@ -15,6 +15,7 @@ const notificationData = {
 
 const userData = new User({
 	name: 'Nombre1',
+	nickName: 'Nickname1',
 	age: 28,
 	email: 'mail1@mail.com',
 	acquaintances: [],

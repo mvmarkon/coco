@@ -7,8 +7,6 @@ const router = Router();
 
 router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
-    console.log('LLEGO POST EVENTO');
-    console.log(JSON.stringify(request.body));
     const event = new Event(request.body);
     const savedEv = await event.save();
     savedEv.participants.forEach(async (user_id) => {

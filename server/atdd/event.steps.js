@@ -34,16 +34,19 @@ defineFeature(feature, (test) => {
 	var users = [
 		{
 			name: 'conocido1',
+			nickName: 'con1',
 			age: 28,
 			email: 'conocido1@mail.com',
 			healthy: true
 		},{
 			name: 'conocido2',
+			nickName: 'con2',
 			age: 26,
 			email: 'conocido2@mail.com',
 			healthy: true
 		},{
 			name: 'conocido3',
+			nickName: 'con3',
 			age: 23,
 			email: 'conocido3@mail.com',
 			healthy: true
@@ -74,6 +77,7 @@ defineFeature(feature, (test) => {
 
 		var userData = {
 			name: 'Nombre',
+			nickName: 'Nickname',
 			age: 28,
 			email: 'mail1@mail.com',
 			acquaintances: acquaintances,

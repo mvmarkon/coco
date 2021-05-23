@@ -30,10 +30,19 @@ router.route('/acquaintances/:id').get(async (request, response) => {
 
 router.route('/:id').get(async (request, response) => {
   try {
-    const user = await User.findById(request.params.id);
-    return response.status(200).json(user);
-  } catch (error) {
-    return response.status(404).send(error);
+    const userbyid = await User.findById(request.params.id);
+    return response.status(200).json(userbyid);
+  } catch (iderror) {
+    const userEmail = await User.findOne({email: request.params.id});
+    if (userEmail) {
+      return response.status(200).json(userEmail);
+    } else {
+      const nickName = await User.findOne({nickName: request.params.id});
+      if(nickName) {
+        return response.status(200).json(nickName);
+      }
+      return response.status(404).send('El usuario solicitado no se encuentra en la base de datos');
+    }
   }
 });
 

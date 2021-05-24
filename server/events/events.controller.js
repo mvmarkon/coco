@@ -12,9 +12,11 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
     savedEv.participants.forEach(async (user_id) => {
       const notif = new Notification({
         notificationName: 'Notificacion de evento: ' + savedEv.eventName,
+        type: 'Evento',
         date: savedEv.date,
         notifier: savedEv.organizer,
-        notify_to: [user_id]
+        notify_to: [user_id],
+        description: savedEv.description
       });
       const savedNotif = await notif.save();
     });
@@ -38,6 +40,21 @@ router.route('/organizer/:id').get(async (request, response) => {
 
 router.route('/').get(async (_, response) => {
   const events = await Event.aggregate([
+    { $addFields: { date: { $dateToString: { format: '%Y-%m-%d', date: '$date' } } } }
+  ]);
+  return response.status(200).json(events);
+});
+
+router.route('/attended/:id').get(async (request, response) => {
+  const events = await Event.aggregate([
+    {
+      $match: {
+        $or: [
+          { organizer: mongoose.Types.ObjectId(request.params.id) },
+          { participants: mongoose.Types.ObjectId(request.params.id) }
+        ]
+      }
+    },
     { $addFields: { date: { $dateToString: { format: '%Y-%m-%d', date: '$date' } } } }
   ]);
   return response.status(200).json(events);

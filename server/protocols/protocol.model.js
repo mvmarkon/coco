@@ -18,6 +18,9 @@ const protocolSchemaDef = {
   allowedPlaces: [{
     type: Object,
 	}],
+	possibleCovidDays: {
+		type: Number,
+	},
 	description: {
 		type: String
 	}

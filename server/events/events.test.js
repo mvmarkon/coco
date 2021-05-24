@@ -8,9 +8,9 @@ import Event from './event.model';
 const validEventData = {
 	eventName: 'primer evento',
 	date: "2021-05-17",
-	hourFrom:1000,
-	hourTo:1060,
-	place:{name:"Plaza", numberParticipants: 10},
+	hourFrom: 1000,
+	hourTo: 1060,
+	place: { name: "Plaza", numberParticipants: 10 },
 	organizer: mongoose.Types.ObjectId()
 }
 
@@ -51,7 +51,7 @@ describe('event model tests', () => {
 
 		try {
 			error = await failEvent.save();
-		} catch(error) {
+		} catch (error) {
 			failed = error;
 		}
 		expect(failed).toBeInstanceOf(mongoose.Error.ValidationError);
@@ -73,14 +73,14 @@ describe('api/events tests', () => {
 		});
 	});
 
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongod.stop();
-  });
+	afterAll(async () => {
+		await mongoose.disconnect();
+		await mongod.stop();
+	});
 
-  afterEach(async () => {
-    await Event.remove({});
-  });
+	afterEach(async () => {
+		await Event.remove({});
+	});
 
 	it('should post and get an event', async () => {
 		const evData = validEventData;
@@ -92,12 +92,12 @@ describe('api/events tests', () => {
 		expect(postResponse.body.place).toBeDefined();
 		expect(Date(postResponse.body.date)).toEqual(Date(validEventData.date));
 
-		const participantNotification = await request(app).get('/api/notifications/'+ evData['participants'][0])
+		const participantNotification = await request(app).get('/api/notifications/' + evData['participants'][0])
 		expect(participantNotification.body.length).toBe(1);
 		expect(JSON.stringify(participantNotification.body[0].notifier)).toContain(validEventData.organizer);
 		const getResponse = await request(app).get('/api/events');
 		expect(getResponse.status).toBe(200);
-    expect(getResponse.body[0]._id).toBe(postResponse.body._id);
+		expect(getResponse.body[0]._id).toBe(postResponse.body._id);
 	});
 
 	it('should get user events', async () => {
@@ -113,5 +113,60 @@ describe('api/events tests', () => {
 		const getResponse_two = await request(app).get('/api/events/organizer/' + user_id);
 		expect(getResponse_two.status).toBe(200);
 		expect(getResponse_two.body.length).toBe(1);
+	});
+})
+
+describe('api/events/attended tests', () => {
+	const mongod = new MongodbMemoryServer();
+
+	beforeAll(async () => {
+		const uri = await mongod.getConnectionString();
+		await mongoose.connect(uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false
+		});
+	});
+
+	afterAll(async () => {
+		await mongoose.disconnect();
+		await mongod.stop();
+	});
+
+	afterEach(async () => {
+		await Event.remove({});
+	});
+
+	it('should get zero events that user attended to', async () => {
+		const user_id = validEventData.organizer;
+		const getResponse_one = await request(app).get('/api/events/attended/' + user_id);
+
+		expect(getResponse_one.status).toBe(200);
+		expect(getResponse_one.body.length).toBe(0);
+	});
+
+	it('should get one event that user attended to as organizer', async () => {
+		const user_id = validEventData.organizer;
+		const createEvent = new Event(validEventData);
+		const saved = await createEvent.save();
+
+		const getResponse_two = await request(app).get('/api/events/attended/' + user_id);
+		expect(getResponse_two.status).toBe(200);
+		expect(getResponse_two.body.length).toBe(1);
+	});
+
+	it('should get events that user attended to as participant', async () => {
+		let otherEvent = validEventData;
+		const otherId = mongoose.Types.ObjectId();
+		otherEvent.organizer = validEventData.organizer;
+		otherEvent['participants'] = [otherId];
+		const createEvent2 = new Event(validEventData);
+		const savedEv2 = await createEvent2.save();
+
+		const getResponse_three = await request(app).get('/api/events/attended/' + otherId);
+		expect(getResponse_three.status).toBe(200);
+		expect(getResponse_three.body.length).toBe(1);
+		expect(getResponse_three.body[0]._id.toString()).toContain(savedEv2._id)
 	});
 })

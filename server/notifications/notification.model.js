@@ -27,6 +27,11 @@ const notificationSchemaDef = {
 		type: Boolean,
 		required: true,
 		default: false
+	},
+	type: {
+		type: String,
+		enum: ['Evento', 'Contacto Estrecho', 'Posible Positivo', 'Resultado Test Positivo', 'Resultado Test Negativo'],
+		required: true
 	}
 };
 

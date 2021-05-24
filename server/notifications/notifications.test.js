@@ -10,6 +10,7 @@ const notificationData = {
 	date: new Date(),
 	notifier: mongoose.Types.ObjectId(),
 	notify_to: [],
+	type: 'Evento',
 	description: 'Descripcion'
 }
 

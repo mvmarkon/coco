@@ -13,11 +13,6 @@ import EventCalendar from "./EventCalendar";
 import CovidReportPage from "./CovidReportPage";
 
 const CoCo = () => {
-  /*const [users, setUsers] = useState();
-
-  const getUsers = () => {
-    fetch('/api/users').then(res => res.json()).then(setUsers);
-  }*/
 
   return (
     <Router>

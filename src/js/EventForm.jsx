@@ -18,13 +18,14 @@ const EventForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const usr = await fetch('/api/users/60967a887dcec85999f5ed1d')
+      const usr = await fetch('/api/users/' + localStorage.getItem('token'))
         .then((res) => res.json()) 
       const prt = await fetch('/api/protocols/active')
         .then((res) => res.json())
       setAcquaintances(usr.acquaintances)
       setParticipants([])
       setProtocols(prt)
+      console.log(usr)
       setUser(usr)
     }
     fetchData()
@@ -73,8 +74,8 @@ const EventForm = () => {
 
   const handleLimit = (event) =>{
     clearParticipants()
-    checkLimit()
     setLimitParticipants(event.target.value)
+    setLimit(false)
     eventData['place'] = {name: event.target.name, numberParticipants: 1}
   }
 
@@ -89,10 +90,12 @@ const EventForm = () => {
     var newC = acquaintances
     newC.splice(changeIndex, 1)
     
-    var newP = participants.concat([event.target.name])
+    //var newP = participants.concat([event.target.name])
+    var participant = event.target.name
 
     setAcquaintances(newC)
-    setParticipants(newP)
+    //setParticipants(newP)
+    setParticipants(prevParticipants => ([...prevParticipants, ...[participant]]))
 
     checkLimit()
   }
@@ -106,17 +109,17 @@ const EventForm = () => {
   }
 
   const quitParticipant = (event) =>{
-      var changeIndex = participants.indexOf(event.target.name)
-      var newP = participants
-      newP.splice(changeIndex, 1)
+    var changeIndex = participants.indexOf(event.target.name)
+    var newP = participants
+    newP.splice(changeIndex, 1)
 
-      var newC = acquaintances.concat([event.target.name])
-      //newC.push(event.target.name)
+    var newC = acquaintances.concat([event.target.name])
+    //newC.push(event.target.name)
 
-      setParticipants(newP)
-      setAcquaintances(newC)
+    setParticipants(newP)
+    setAcquaintances(newC)
 
-      checkLimit()
+    checkLimit()
   }
 
   const handleConfirm = (event) =>{
@@ -132,17 +135,13 @@ const EventForm = () => {
       postData('api/events/', data)
   }
 
-  const goToCalendar = (event) => {
-      fetch('api/events/organizer/'+ user._id)
-      .then(()=>{
-          history.push("/EventCalendar")
-          window.location.reload()
-      })
+  const goToCalendar = () => {
+    history.push("/EventCalendar")
+    window.location.reload()
   }
 
   const postData = (url, data) =>{ 
       console.log(data)
-      debugger;
         const response = fetch(url, {
           method: 'POST',
           body: JSON.stringify(data),
@@ -156,7 +155,6 @@ const EventForm = () => {
           res.json()})
         .catch(error => console.error('Error:', error))
       console.log(response)
-      debugger;
       return response;
   }
 
@@ -188,13 +186,13 @@ const EventForm = () => {
                         </div>
                         <div className="form-group">
                             <label htmlFor="protocols">Lugar permitido</label><br/>
-                            <div className="radio">
+                            <div className="radio" onChange = {handleLimit}>
                               {protocols.allowedPlaces.map(p =>
                               <div>
-                                  <input type="radio" key={p.name} name={p.name} value = {p.limit} onClick={handleLimit}/>
+                                  <input type="radio" key={p.name} name = "place" value = {p.limit}/>
                                   <label>{p.name}</label>
                               </div>
-                            )}
+                              )}
                             </div>
                         </div>
                         <div className="form-group">

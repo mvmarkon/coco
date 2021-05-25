@@ -9,8 +9,8 @@ const EventCalendar = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const events = await fetch('api/events/organizer/60967a887dcec85999f5ed1d')
-                        .then((res)=>res.json())
+            const events = await fetch('api/events/attended/'+ localStorage.getItem('token'))
+                    .then((res)=>res.json())
             const users = await fetch("api/users").then(res =>res.json())
             const evts = events.map(evt=>{
             const organizerId = evt.organizer

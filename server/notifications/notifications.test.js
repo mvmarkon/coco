@@ -145,7 +145,7 @@ describe('api/notifications/possible_covid tests', () => {
 		var user_saved = await newUser.save();
 
 		var part1 = mongoose.Types.ObjectId();
-		var part2 = mongoose.Types.ObjectId();
+		var part2 = notificationData.notifier;
 
 		var prot = new Protocol({
 			name: 'Protocolo test',
@@ -159,7 +159,7 @@ describe('api/notifications/possible_covid tests', () => {
 		const active_prot = await prot.save();
 		let evtData = new Event({
 			eventName: 'test evento posible covid',
-			date: "2021-05-24",
+			date: "2021-05-25",
 			hourFrom: 1000,
 			hourTo: 1060,
 			place: { name: "Plaza", numberParticipants: 10 },
@@ -167,19 +167,29 @@ describe('api/notifications/possible_covid tests', () => {
 			organizer: user_saved._id,
 			description: 'test posible covid'
 		});
+		let evtData2 = new Event({
+			eventName: 'test evento posible covid',
+			date: "2021-05-25",
+			hourFrom: 1080,
+			hourTo: 1140,
+			place: { name: "Plaza", numberParticipants: 10 },
+			participants: [part1, user_saved._id],
+			organizer: part2,
+			description: 'test posible covid'
+		});
 		const createEvent = new Event(evtData);
 		const evt = await createEvent.save();
-	
-		const fullNotifData = JSON.parse(JSON.stringify(notificationData));
+
+		const createEvent2 = new Event(evtData2);
+		const evt2 = await createEvent2.save();
+
+		var fullNotifData = JSON.parse(JSON.stringify(notificationData));
 		var notifications = await Notification.find({});
 		expect(notifications.length).toBe(0);
 		fullNotifData.notify_to.push(user_saved._id);
 		const postResponse = await request(app).post('/api/notifications/possible_covid/').send(fullNotifData);
-		console.log(postResponse.body);
 		expect(postResponse.status).toBe(201);
-		expect(postResponse.body).toBe('OK');
-		notifications = await Notification.find();
-		expect(notifications.length).toBe(1);
+		expect(postResponse.body.length).toBe(4);
 
 	});
 });

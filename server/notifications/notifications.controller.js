@@ -2,10 +2,7 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import Notification from './notification.model';
 import Protocol from '../protocols/protocol.model';
-import apiHelper from '../helpers/apiHelpers';
-
-// import eventModel from '../events/event.model';
-import { postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo} from '../helpers/events'
+import { postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo,filterPossibleCovidEvents,notifyEvent} from '../helpers/apiHelpers';
 import { notificationTypes } from '../config'
 
 // new
@@ -67,11 +64,11 @@ router.route('/possible_covid/').post(bodyParser.json(), async (request, respons
     var date_from = new Date(new Date(notifyData.date).setHours(0,0,0,0));
     date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
 
-    let evts_target = await apiHelper.filterPossibleCovidEvents(notifyData.notifier, date_from);
+    let evts_target = await filterPossibleCovidEvents(notifyData.notifier, date_from);
 
     notifyData.type = 'Posible Positivo';
     var notifications = await Promise.all(evts_target.map(async evt => {
-      return await apiHelper.notifyEvent(evt, notifyData.notifier, notifyData);
+      return await notifyEvent(evt, notifyData.notifier, notifyData);
     }));
     return response.status(201).json(notifications.flat());
   } catch (error) {

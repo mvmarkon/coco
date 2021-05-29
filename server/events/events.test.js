@@ -50,7 +50,7 @@ describe('event model tests', () => {
 		let failed;
 
 		try {
-			error = await failEvent.save();
+			let error = await failEvent.save();
 		} catch (error) {
 			failed = error;
 		}

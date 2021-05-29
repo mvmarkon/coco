@@ -1,6 +1,14 @@
 import mongoose from 'mongoose';
 import Event from '../events/event.model';
 import Notification from '../notifications/notification.model';
+import Protocol from '../protocols/protocol.model';
+
+exports.startDateFromProtocol = async (date) => {
+	let protocol = await Protocol.findOne({ active: true });
+	let date_from = new Date(new Date(notifyData.date).setHours(0,0,0,0));
+	date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
+	return date_from
+}
 
 exports.filterPossibleCovidEvents = async (notifier_id, date_from) => {
 	let notif = mongoose.Types.ObjectId(notifier_id);

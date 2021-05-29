@@ -56,23 +56,23 @@ router.route('/').get(async (_, response) => {
   return response.status(200).json(notifications);
 });
 
-router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
-  var notifyData = request.body;
-  try {
-    var protocol = await Protocol.findOne({ active: true });
-    var date_from = new Date(new Date(notifyData.date).setHours(0,0,0,0));
-    date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
+// router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
+//   var notifyData = request.body;
+//   try {
+//     var protocol = await Protocol.findOne({ active: true });
+//     var date_from = new Date(new Date(notifyData.date).setHours(0,0,0,0));
+//     date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
 
-    let evts_target = await filterPossibleCovidEvents(notifyData.notifier, date_from);
-    
-    notifyData.type = 'Posible Positivo';
-    var notifications = await Promise.all(evts_target.map(async evt => {
-      return await notifyEvent(evt, notifyData.notifier, notifyData);
-    }));
-    return response.status(201).json(notifications.flat());
-  } catch (error) {
-    return response.status(400).send(error);
-  }
-});
+//     let evts_target = await apiHelper.filterPossibleCovidEvents(notifyData.notifier, date_from);
+
+//     notifyData.type = 'Posible Positivo';
+//     var notifications = await Promise.all(evts_target.map(async evt => {
+//       return await apiHelper.notifyEvent(evt, notifyData.notifier, notifyData);
+//     }));
+//     return response.status(201).json(notifications.flat());
+//   } catch (error) {
+//     return response.status(400).send(error);
+//   }
+// });
 
 export default router;

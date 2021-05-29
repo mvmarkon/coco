@@ -61,7 +61,7 @@ describe('event model tests', () => {
 		const newNotification = new Notification({});
 		let failed;
 		try {
-			error = await newNotification.save();
+			let error = await newNotification.save();
 		} catch (error) {
 			failed = error;
 		}
@@ -157,26 +157,28 @@ describe('api/notifications/possible_covid tests', () => {
 		});
 
 		const active_prot = await prot.save();
-		let evtData = new Event({
-			eventName: 'test evento posible covid',
-			date: "2021-05-25",
-			hourFrom: 1000,
-			hourTo: 1060,
-			place: { name: "Plaza", numberParticipants: 10 },
-			participants: [part1, part2],
-			organizer: user_saved._id,
-			description: 'test posible covid'
-		});
-		let evtData2 = new Event({
-			eventName: 'test evento posible covid',
-			date: "2021-05-25",
-			hourFrom: 1080,
-			hourTo: 1140,
-			place: { name: "Plaza", numberParticipants: 10 },
-			participants: [part1, user_saved._id],
-			organizer: part2,
-			description: 'test posible covid'
-		});
+		let today = new Date()
+let twoDaysAgo = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() - 1)
+let evtData = new Event({
+            eventName: 'test evento posible covid',
+            date: twoDaysAgo,
+            hourFrom: 1000,
+            hourTo: 1060,
+            place: { name: "Plaza", numberParticipants: 10 },
+            participants: [part1, part2],
+            organizer: user_saved._id,
+            description: 'test posible covid'
+        });
+        let evtData2 = new Event({
+            eventName: 'test evento posible covid',
+            date: twoDaysAgo,
+            hourFrom: 1080,
+            hourTo: 1140,
+            place: { name: "Plaza", numberParticipants: 10 },
+            participants: [part1, user_saved._id],
+            organizer: part2,
+            description: 'test posible covid'
+        });
 		const createEvent = new Event(evtData);
 		const evt = await createEvent.save();
 

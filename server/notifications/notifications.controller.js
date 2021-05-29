@@ -4,7 +4,6 @@ import Notification from './notification.model';
 import Protocol from '../protocols/protocol.model';
 import { postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo,filterPossibleCovidEvents,notifyEvent} from '../helpers/apiHelpers';
 import { notificationTypes } from '../config'
-
 // new
 const router = Router();
 
@@ -35,7 +34,7 @@ router.route('/close_contact').post(bodyParser.json(), async (request,response) 
 router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
     let {notify_to} = request.body
-    notifyTo(notify_to,request.body)
+    notifyTo(null,notify_to,request.body)
     return response.status(201).json('OK');
   } catch (error) {
     return response.status(400).send(error);
@@ -65,7 +64,7 @@ router.route('/possible_covid/').post(bodyParser.json(), async (request, respons
     date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
 
     let evts_target = await filterPossibleCovidEvents(notifyData.notifier, date_from);
-
+    
     notifyData.type = 'Posible Positivo';
     var notifications = await Promise.all(evts_target.map(async evt => {
       return await notifyEvent(evt, notifyData.notifier, notifyData);

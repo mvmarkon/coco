@@ -32,7 +32,7 @@ const FormCloseContact = () => {
                 body: JSON.stringify({
                     notify_to: acquaintances,
                     notified: false,
-                    notificationName: 'Contacto estrecho',
+                    notificationName:'Contacto estrecho',
                     date: new Date().toISOString(),
                     description: stateCovid==="1" ? 'Positivo' : 'Posible positivo',
                     notifier: '60967a887dcec85999f5ed1d'

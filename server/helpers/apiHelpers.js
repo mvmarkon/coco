@@ -2,8 +2,9 @@ import mongoose from 'mongoose';
 import Event from '../events/event.model';
 import Notification from '../notifications/notification.model';
 
-const filterPossibleCovidEvents = async (notifier_id, date_from) => {
+exports.filterPossibleCovidEvents = async (notifier_id, date_from) => {
 	let notif = mongoose.Types.ObjectId(notifier_id);
+	
 	const evs = await Event.aggregate([{
 		$match: {
 			$and: [
@@ -24,9 +25,9 @@ const filterPossibleCovidEvents = async (notifier_id, date_from) => {
 	return evs;
 }
 
-const notifyEvent = async (event, notifier, notifyData) => {
+exports.notifyEvent = async (event, notifier, notifyData) => {
 	var ids_to_notify = [event.organizer].concat(event.participants);
-	var notificated = notifyTo(event,ids_to_notify,notifyData)
+	var notificated = await notifyTo(event,ids_to_notify,notifyData)
 	return notificated.filter(Boolean);
 }
 
@@ -38,7 +39,7 @@ async function postDateEvents(contactDate) {
   }
 
   function eventsWhereParticiped(events,userID) {
-    return events.filter(event=>event.organizer == userID || event.participants.includes(userID))
+    return events.filter(event=>event.organizer.toString() === userID || event.participants.includes(userID))
   }
 
   function allParticipantIDFrom(events) {
@@ -47,7 +48,7 @@ async function postDateEvents(contactDate) {
         ).flat().map(a => a.toString())
   }
 
-  async function notifyTo(event = null,usersIdToNotify,notifyData) {
+  async function notifyTo(event,usersIdToNotify,notifyData) {
     return await Promise.all(usersIdToNotify.map(async user => {
       if (user.toString() !== notifyData.notifier) {
         notifyData.notify_to = [user];
@@ -62,4 +63,4 @@ async function postDateEvents(contactDate) {
     )
   }
 
-export {postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo,filterPossibleCovidEvents,notifyEvent} 
+export {postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo} 

@@ -1,26 +1,23 @@
 import React,{useEffect,useState} from 'react'
 import '../css/EventCalendar.css'
 
-// {place: {name: '', numberParticipants : 1}} 
-
-
 const EventCalendar = () => {    
     const [upcomingEvents,setUpcomingEvents]= useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             const events = await fetch('api/events/attended/'+ localStorage.getItem('token'))
-                    .then((res)=>res.json())
+            .then(res => res.json())
             const users = await fetch("api/users").then(res =>res.json())
             const evts = events.map(evt=>{
-            const organizerId = evt.organizer
-            const participantsId = evt.participants
-            const organizer= users.find(user=>organizerId === user._id )
-            const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
-            console.log(events)
-            return {...evt,organizer,participants}
-        })
-        setUpcomingEvents(evts)                             
+                const organizerId = evt.organizer
+                const participantsId = evt.participants
+                const organizer= users.find(user=>organizerId === user._id )
+                const participants= users.filter(user=>participantsId.some(participant=>user._id===participant)) 
+                console.log(events)
+                return {...evt,organizer,participants}
+            })
+            setUpcomingEvents(evts)                             
         }
         fetchData()
     }, [setUpcomingEvents])

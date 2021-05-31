@@ -17,7 +17,7 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
         type: 'Evento',
         date: savedEv.date,
         notifier: savedEv.organizer,
-        notify_to: [user_id],
+        notify_to: user_id,
         description: savedEv.description,
         // TODO agregue el id del evento a la notificacion de evento
         event: mongoose.Types.ObjectId(event.id)
@@ -81,7 +81,6 @@ router.delete('/cancel_event/:id',async (req,res)=>{
       date: new Date(),
       description: eventDeleted.description
     }
-    console.log(eventDeleted)
     // notificacion a usuarios de eliminacion de evento
      await notifyTo(eventIdMoongoose,eventDeleted.participants,notification)
     // respuesta    

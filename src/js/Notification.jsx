@@ -42,15 +42,10 @@ const Notifications = () => {
 	}
 
 	const cancelInvitation = (event) =>{
-		var dot = document.getElementById(event.target.name);
-		if (! dot.hidden) {
-			dot.hidden = true;
-			seeNotification()
-			dot = document.getElementById(- event.target.name);
-			dot.hidden = false;
-		}
-		console.log(event.target.id)
-		fetch('api/events/cancel_participation/' + event.target.id, {
+		var noti = JSON.parse(event.target.value)
+		console.log(noti._id)
+		var seen = event.target.name
+		fetch('api/events/cancel_participation/' + noti.event, {
 			method: 'PATCH',
 			body: JSON.stringify({"cancelingId": localStorage.getItem('token')}),
 			headers:{
@@ -59,16 +54,27 @@ const Notifications = () => {
 		})
 		.then(res => {
 			console.log('Success:', res)
+			var dot = document.getElementById(seen);
+			//efectos front
+			if (! dot.hidden) {
+				dot.hidden = true;
+				seeNotification(noti._id)
+				dot = document.getElementById(- seen);
+				dot.hidden = false;
+			}
+			var div =document.getElementById(noti._id)
+			debugger;
+			div.hidden = true
 			return res.json()})
 		.catch(error => console.error('Error:', error))
 	}
 
 	const acceptInvitation = (event) =>{
-		console.log(event.target.name)
+		var noti = JSON.parse(event.target.value)
 		var dot = document.getElementById(event.target.name);
 		if (! dot.hidden) {
 			dot.hidden = true;
-			seeNotification()
+			seeNotification(noti._id)
 			dot = document.getElementById(- event.target.name);
 			dot.hidden = false;
 		}
@@ -91,9 +97,9 @@ const Notifications = () => {
 					<div className="card-body">
 						<h5 className="card-title">{noti.notificationName}</h5>
 						<p className="card-text">{noti.description}</p>
-						<div hidden= {isEvent(noti.type)}>
-							<button onClick = {cancelInvitation} id={noti.event} name={index+1} className="btn btn-warning">Rechazar</button>
-							<button onClick = {acceptInvitation} name={index+1} className="btn btn-success">Aceptar</button>
+						<div hidden= {isEvent(noti.type)} id= {noti._id}>
+							<button onClick = {cancelInvitation} value= {JSON.stringify(noti)} name={index+1} className="btn btn-warning">Rechazar</button>
+							<button onClick = {acceptInvitation} value= {JSON.stringify(noti)} name={index+1} className="btn btn-success">Aceptar</button>
 						</div>
 					</div>
 					<div className="card-footer text-muted">

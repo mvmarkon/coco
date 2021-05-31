@@ -33,10 +33,9 @@ const EventCalendar = () => {
         <div className='events-container'>
             {
                 upcomingEvents.map( event =>
-
+                    <div className="event-container" key = {event._id}>
                      <Event 
                          onCancelEvent={handleCancelEvent}
-                         key={event.id}
                          name={event.eventName}
                          date={event.date}
                          id={event._id}
@@ -46,6 +45,7 @@ const EventCalendar = () => {
                          organizer={event.organizer}
                          participants={event.participants}
                          description={event.description} />
+                    </div>
                 )
             }    
         </div>

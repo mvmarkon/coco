@@ -16,7 +16,7 @@ export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,
 
 
     return (
-        <div className="event-container">
+            <>
             <p className="event-section event-title">
                 {name}
             </p>
@@ -36,7 +36,7 @@ export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,
                 <h4>Invitados</h4>
                 <ul>
                     {participants.map(participant=>
-                        <li>
+                        <li key = {participant.nickName}>
                             {participant.name}                            
                         </li>
                         )}
@@ -49,6 +49,7 @@ export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,
             <div className="event-section event-last-section">
                 <button className="cancel-event-btn" onClick={handleClick}> Cancelar evento </button>
             </div>
-        </div>)
+        </>
+    )
     
 }

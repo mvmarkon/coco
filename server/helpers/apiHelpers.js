@@ -63,4 +63,8 @@ async function postDateEvents(contactDate) {
     )
   }
 
+  async function notifyEventCancelled(usersIdToNotify) {
+    
+  }
+
 export {postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo} 

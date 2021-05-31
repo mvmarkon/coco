@@ -19,36 +19,90 @@ const Notifications = () => {
         fetchNotis()
     }, [setNotis])
 
+	const setAsSeen = (event) => {
+		var dot = document.getElementById(event.target.id);
+		if (! dot.hidden) {
+			dot.hidden = true;
+			dot = document.getElementById(- event.target.id);
+			dot.hidden = false;
+		}
+		seeNotification()
+	}
+
+	const seeNotification = () => {
+		const response = fetch('api/notifications/notified/'+ localStorage.getItem('token'), {method: 'PATCH'})
+		.then(res => {
+			console.log('Success:', response)
+			res.json()})
+		.catch(error => console.error('Error:', error))
+	}
+
+	const isEvent = (type) => {
+		return !(type === "Evento")
+	}
+
+	const cancelInvitation = (event) =>{
+		var dot = document.getElementById(event.target.name);
+		if (! dot.hidden) {
+			dot.hidden = true;
+			seeNotification()
+			dot = document.getElementById(- event.target.name);
+			dot.hidden = false;
+		}
+		console.log(event.target.id)
+		const response = fetch('api/events/cancel_participation/' + event.target.id, {
+			method: 'PATCH',
+			body: JSON.stringify({"cancelingId": localStorage.getItem('token')}),
+			headers:{
+				'Content-Type': 'application/json'
+			  }
+		})
+		.then(res => {
+			console.log('Success:', response)
+			res.json()})
+		.catch(error => console.error('Error:', error))
+	}
+
+	const acceptInvitation = (event) =>{
+		console.log(event.target.name)
+		var dot = document.getElementById(event.target.name);
+		if (! dot.hidden) {
+			dot.hidden = true;
+			seeNotification()
+			dot = document.getElementById(- event.target.name);
+			dot.hidden = false;
+		}
+	}
+
 	return (
 		<div className="contaimer">
 			{notis.map((noti, index) => {
 				return (
-				<div key={index} class="card text-center">
-					<div class="card-header">
+				<div key={index} className="card text-center">
+					<div className="card-header">
 						{noti.type}
+						<div id= {index+1} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified} onClick = {setAsSeen}>
+  							<span className="visually-hidden">Loading...</span>
+						</div>
+						<div id= {- index-1} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} onClick = {setAsSeen}>
+  							<span className="visually-hidden">Loading...</span>
+						</div>
 					</div>
-					<div class="card-body">
-						<h5 class="card-title">{noti.notificationName}</h5>
-						<p class="card-text">{noti.description}</p>
-						<IsEvent type = {noti.type}/>
+					<div className="card-body">
+						<h5 className="card-title">{noti.notificationName}</h5>
+						<p className="card-text">{noti.description}</p>
+						<div hidden= {isEvent(noti.type)}>
+							<button onClick = {cancelInvitation} id={noti.event} name={index+1} className="btn btn-warning">Rechazar</button>
+							<button onClick = {acceptInvitation} name={index+1} className="btn btn-success">Aceptar</button>
+						</div>
 					</div>
-					<div class="card-footer text-muted">
+					<div className="card-footer text-muted">
 						{noti.date}
 					</div>
 				</div>)
 			})}
 		</div>
 	);
-}
-
-const IsEvent = (type) => {
-	if (type == 'Evento'){
-		return(<>
-			<a href="#" class="btn btn-primary">Aceptar</a>
-			<a href="#" class="btn btn-primary">Rechazar</a>
-		</>
-		)
-	}
 }
 
 export default Notifications

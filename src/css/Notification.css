@@ -24,3 +24,9 @@
 	grid-gap: 30 px;
 	row-gap: 30 px;
 }
+
+.stopped{
+	animation: spinner-grow .75s linear infinite;
+	animation-fill-mode: backwards;
+	animation-play-state: paused;
+}

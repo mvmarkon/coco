@@ -29,7 +29,7 @@ const FormPossibleContact = () => {
         console.log(onsetSympstomsDate)
         console.log(bodyTemperature)
         console.log(syntomsSelected)
-        fetch('api/users/acquaintances/60967a887dcec85999f5ed1d').then(
+        fetch('api/users/acquaintances/'+ localStorage.getItem('token')).then(
             res=> res.json()
         ).then(acquaintances=>
             fetch('api/notifications',{
@@ -41,9 +41,10 @@ const FormPossibleContact = () => {
                     notify_to:acquaintances,
                     notified:false,
                     notificationName:'POSIBLE CASO DE COVID POSITIVO',
+                    type: 'Posible Positivo',
                     date:new Date().toISOString(),
                     description: JSON.stringify(syntomsSelected),
-                    notifier:'60967a887dcec85999f5ed1d'})
+                    notifier: localStorage.getItem('token')})
             }).then(res=> { 
                 if (res.status===201) 
                     {

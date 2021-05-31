@@ -24,7 +24,6 @@ const Notifications = () => {
 	return (
 		<div className="contaimer">
 			{notis.map((notif, index) => {
-				debugger;
 				return (
 				<div key={index} className="card text-center">
 					<Notification noti={notif} index = {index + 1}/>

@@ -46,7 +46,7 @@ export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,
             <h4>Descripcion:</h4>
                     { description }
             </div>
-            <div className="event-section event-last-section">
+            <div hidden={JSON.stringify(organizer._id)!==JSON.stringify(localStorage.getItem('token'))} className="event-section event-last-section">
                 <button className="cancel-event-btn" onClick={handleClick}> Cancelar evento </button>
             </div>
         </>

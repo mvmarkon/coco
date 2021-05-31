@@ -4,7 +4,8 @@ import '../css/Notification.css'
 const Notification = (props) => {
 	const noti = props.noti
 	const index = props.index
-	const [hideEvent, setHideEvent] = useState(noti.notified || ! noti.type === 'Evento')
+
+	const [hideEvent, setHideEvent] = useState(noti.notified || ! (noti.type === 'Evento'))
 
 	const setAsSeen = (event) => {
 		var dot = document.getElementById(event.target.id);
@@ -66,7 +67,7 @@ const Notification = (props) => {
 		<>
 					<div className="card-header">
 						{noti.type}
-						<div id= {index} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified || hideEvent} notid={noti._id} onClick = {setAsSeen}>
+						<div id= {index} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified || !hideEvent} notid={noti._id} onClick = {setAsSeen}>
   							<span className="visually-hidden">Loading...</span>
 						</div>
 						<div id= {- index} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} notid={noti._id} onClick = {setAsSeen}>

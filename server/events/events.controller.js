@@ -64,6 +64,37 @@ router.route('/attended/:id').get(async (request, response) => {
   return response.status(200).json(events);
 });
 
+router.route('/cancel_participation/:id').patch(bodyParser.json(), async (request, response) => {
+  let cancelForId = request.body.cancelingId;
+  try {
+    var event = await Event.findById(request.params.id);
+
+    var new_part = []
+    event.participants.forEach(part => {
+      if(part.toString() !== cancelForId) {
+        new_part.push(part);
+      }
+    });
+    const new_place = {
+      name: event.place.name,
+      numberParticipants: event.place.numberParticipants - 1
+    }
+
+    await Event.updateOne(
+      {_id: request.params.id},
+      {
+        place: new_place,
+        participants: new_part
+      },
+      {upsert: false}
+    ).then( saved => {
+      return response.status(200).json(saved);
+    })
+  } catch(error) {
+    console.log(error);
+    return response.status(400).send(error);
+  }
+});
 
 router.delete('/cancel_event/:id',async (req,res)=>{
   const { id } = req.params

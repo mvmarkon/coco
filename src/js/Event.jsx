@@ -16,7 +16,7 @@ export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,
 
 
     return (
-            <>
+       <>
             <p className="event-section event-title">
                 {name}
             </p>

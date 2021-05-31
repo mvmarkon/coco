@@ -43,7 +43,6 @@ router.route('/organizer/:id').get(async (request, response) => {
 });
 
 router.route('/').get(async (_, response) => {
-  
   const events = await Event.aggregate([
     { $addFields: { date: { $dateToString: { format: '%Y-%m-%d', date: '$date' } } } }
   ]);

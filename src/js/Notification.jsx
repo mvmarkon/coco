@@ -26,14 +26,14 @@ const Notifications = () => {
 			dot = document.getElementById(- event.target.id);
 			dot.hidden = false;
 		}
-		seeNotification()
+		seeNotification(dot.getAttribute('notid'))
 	}
 
-	const seeNotification = () => {
-		const response = fetch('api/notifications/notified/'+ localStorage.getItem('token'), {method: 'PATCH'})
+	const seeNotification = (notid) => {
+		fetch('api/notifications/notified/'+ notid, {method: 'PATCH'})
 		.then(res => {
-			console.log('Success:', response)
-			res.json()})
+			console.log('Success:', res)
+			return res.json()})
 		.catch(error => console.error('Error:', error))
 	}
 
@@ -50,7 +50,7 @@ const Notifications = () => {
 			dot.hidden = false;
 		}
 		console.log(event.target.id)
-		const response = fetch('api/events/cancel_participation/' + event.target.id, {
+		fetch('api/events/cancel_participation/' + event.target.id, {
 			method: 'PATCH',
 			body: JSON.stringify({"cancelingId": localStorage.getItem('token')}),
 			headers:{
@@ -58,8 +58,8 @@ const Notifications = () => {
 			  }
 		})
 		.then(res => {
-			console.log('Success:', response)
-			res.json()})
+			console.log('Success:', res)
+			return res.json()})
 		.catch(error => console.error('Error:', error))
 	}
 
@@ -78,13 +78,13 @@ const Notifications = () => {
 		<div className="contaimer">
 			{notis.map((noti, index) => {
 				return (
-				<div key={index} className="card text-center">
+				<div key={index} noti={noti} className="card text-center">
 					<div className="card-header">
 						{noti.type}
-						<div id= {index+1} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified} onClick = {setAsSeen}>
+						<div id= {index+1} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified} notid={noti._id} onClick = {setAsSeen}>
   							<span className="visually-hidden">Loading...</span>
 						</div>
-						<div id= {- index-1} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} onClick = {setAsSeen}>
+						<div id= {- index-1} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} notid={noti._id} onClick = {setAsSeen}>
   							<span className="visually-hidden">Loading...</span>
 						</div>
 					</div>

@@ -5,6 +5,12 @@ import {Event} from './Event'
 const EventCalendar = () => {    
     const [upcomingEvents,setUpcomingEvents]= useState([])
 
+    
+    const handleCancelEvent = async (id) => {
+        setUpcomingEvents(upcomingEvents.filter(evt=>evt._id!==id))
+        fetch(`api/events/cancel_event/${id}`,{method:'DELETE'})
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const events = await fetch('api/events/attended/'+ localStorage.getItem('token'))
@@ -23,14 +29,17 @@ const EventCalendar = () => {
         fetchData()
     }, [setUpcomingEvents])
 
-    console.log(upcomingEvents)
     return (
         <div className='events-container'>
             {
-                upcomingEvents.map( event => 
+                upcomingEvents.map( event =>
+
                      <Event 
+                         onCancelEvent={handleCancelEvent}
+                         key={event.id}
                          name={event.eventName}
                          date={event.date}
+                         id={event._id}
                          hourFrom={event.hourFrom}
                          hourTo={event.hourTo}
                          place={event.place}

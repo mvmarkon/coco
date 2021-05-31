@@ -1,6 +1,6 @@
 import React from 'react'
-
-export const Event = ({name,description,date,hourTo,hourFrom,place,organizer,participants})=>{
+import '../css/Event.css'
+export const Event = ({name,id,description,date,hourTo,hourFrom,place,organizer,participants,onCancelEvent})=>{
 
 
     const minToTime = (min) =>{
@@ -9,6 +9,10 @@ export const Event = ({name,description,date,hourTo,hourFrom,place,organizer,par
         var limitM = (min % 60)
         return limitH+':'+limitM
       }
+
+    const handleClick = (e)=>{
+        onCancelEvent(id)        
+    }  
 
 
     return (
@@ -38,9 +42,12 @@ export const Event = ({name,description,date,hourTo,hourFrom,place,organizer,par
                         )}
                 </ul>
             </div>
-            <div className="event-section event-last-section">
+            <div className="event-section ">
             <h4>Descripcion:</h4>
                     { description }
+            </div>
+            <div className="event-section event-last-section">
+                <button className="cancel-event-btn" onClick={handleClick}> Cancelar evento </button>
             </div>
         </div>)
     

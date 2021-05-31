@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import '../css/Notification.css'
 
-const Notifications = () => {
-    const [notis,setNotis]= useState([])
-
-	useEffect(() => {
-        const fetchNotis = async () => {
-			const notifs = await fetch('/api/notifications/'+ localStorage.getItem('token'))
-			.then(res => res.json())
-            const users = await fetch("api/users").then(res =>res.json())
-			const nots = notifs.map(not=>{
-				const notifier = users.find(user=>not.notifier === user._id).nickName
-				return{...not, notifier}
-			})
-			//.catch(error => this.setState({ error: '??' }));
-        	setNotis(nots)                            
-        }
-        fetchNotis()
-    }, [setNotis])
+const Notification = (props) => {
+	const noti = props.noti
+	const index = props.index
+	const [hideEvent, setHideEvent] = useState(noti.notified || ! noti.type === 'Evento')
 
 	const setAsSeen = (event) => {
 		var dot = document.getElementById(event.target.id);
@@ -35,10 +22,6 @@ const Notifications = () => {
 			console.log('Success:', res)
 			return res.json()})
 		.catch(error => console.error('Error:', error))
-	}
-
-	const isEvent = (type) => {
-		return !(type === "Evento")
 	}
 
 	const cancelInvitation = (event) =>{
@@ -62,9 +45,7 @@ const Notifications = () => {
 				dot = document.getElementById(- seen);
 				dot.hidden = false;
 			}
-			var div =document.getElementById(noti._id)
-			debugger;
-			div.hidden = true
+			setHideEvent(true)
 			return res.json()})
 		.catch(error => console.error('Error:', error))
 	}
@@ -78,37 +59,33 @@ const Notifications = () => {
 			dot = document.getElementById(- event.target.name);
 			dot.hidden = false;
 		}
+		setHideEvent(true)
 	}
 
 	return (
-		<div className="contaimer">
-			{notis.map((noti, index) => {
-				return (
-				<div key={index} noti={noti} className="card text-center">
+		<>
 					<div className="card-header">
 						{noti.type}
-						<div id= {index+1} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified} notid={noti._id} onClick = {setAsSeen}>
+						<div id= {index} className="spinner-grow spinner-grow-sm text-info" role="status" hidden= {noti.notified || hideEvent} notid={noti._id} onClick = {setAsSeen}>
   							<span className="visually-hidden">Loading...</span>
 						</div>
-						<div id= {- index-1} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} notid={noti._id} onClick = {setAsSeen}>
+						<div id= {- index} className="spinner-grow-stopped text-info" role="status" hidden= {! noti.notified} notid={noti._id} onClick = {setAsSeen}>
   							<span className="visually-hidden">Loading...</span>
 						</div>
 					</div>
 					<div className="card-body">
 						<h5 className="card-title">{noti.notificationName}</h5>
 						<p className="card-text">{noti.description}</p>
-						<div hidden= {isEvent(noti.type)} id= {noti._id}>
-							<button onClick = {cancelInvitation} value= {JSON.stringify(noti)} name={index+1} className="btn btn-warning">Rechazar</button>
-							<button onClick = {acceptInvitation} value= {JSON.stringify(noti)} name={index+1} className="btn btn-success">Aceptar</button>
+						<div hidden= {hideEvent} id= {noti._id}>
+							<button onClick = {cancelInvitation} value= {JSON.stringify(noti)} name={index} className="btn btn-warning">Rechazar</button>
+							<button onClick = {acceptInvitation} value= {JSON.stringify(noti)} name={index} className="btn btn-success">Aceptar</button>
 						</div>
 					</div>
 					<div className="card-footer text-muted">
 						{noti.date}
 					</div>
-				</div>)
-			})}
-		</div>
+		</>
 	);
 }
 
-export default Notifications
+export default Notification

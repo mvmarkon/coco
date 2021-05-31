@@ -11,7 +11,7 @@ import Start from "./Start";
 import EventForm from "./EventForm";
 import EventCalendar from "./EventCalendar";
 import CovidReportPage from "./CovidReportPage";
-import Notifications from "./Notification"
+import Notifications from "./NotificationList"
 
 const CoCo = () => {
 

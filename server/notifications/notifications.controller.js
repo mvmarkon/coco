@@ -56,6 +56,20 @@ router.route('/').get(async (_, response) => {
   return response.status(200).json(notifications);
 });
 
+router.route('/notified/:id').patch(async (request, response) => {
+  Notification.findByIdAndUpdate(
+    {_id: request.params.id},
+    {notified: true},
+    {new: true},
+    function(err, model) {
+      if (err){
+        return response.status(400).send(err);
+      } else {
+        return response.status(200).json(model);
+      }
+    });
+});
+
 router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
   var notifyData = request.body;
   try {

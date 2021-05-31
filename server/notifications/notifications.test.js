@@ -7,7 +7,7 @@ import app from '../app';
 import request from 'supertest';
 import Protocol from '../protocols/protocol.model';
 
-const notificationData = {
+var notificationData = {
 	notificationName: 'Notificacion',
 	date: new Date(),
 	notifier: mongoose.Types.ObjectId(),
@@ -49,10 +49,9 @@ describe('event model tests', () => {
 		const newUser = new User(userData);
 		const user_saved = await newUser.save();
 		const fullNotifData = JSON.parse(JSON.stringify(notificationData));
-		fullNotifData.notify_to.push(user_saved._id);
+		fullNotifData.notify_to = user_saved._id;
 		const newNotification = new Notification(fullNotifData);
 		const notificationSaved = await newNotification.save();
-
 		expect(notificationSaved.id).toBeDefined();
 		expect(notificationSaved.notified).toBe(false);
 	});
@@ -88,10 +87,11 @@ describe('api/notifications tests', () => {
 		await mongod.stop();
 	});
 	afterEach(async () => {
-		await Notification.remove({});
-		await User.remove({});
+		await Notification.deleteMany({});
+		await User.deleteMany({});
+		await Protocol.deleteMany({});
 	});
-	
+
 	it('should persist a notification when received a POST request with correct data', async () => {
 		const newUser = new User(userData);
 		const user_saved = await newUser.save();
@@ -106,7 +106,7 @@ describe('api/notifications tests', () => {
 		const newUser = new User(userData);
 		const user_saved = await newUser.save();
 		const fullNotifData = JSON.parse(JSON.stringify(notificationData));
-		fullNotifData.notify_to.push(user_saved._id);
+		fullNotifData.notify_to = user_saved._id;
 		const newNotification = new Notification(fullNotifData);
 		const notificationSaved = await newNotification.save();
 
@@ -114,7 +114,7 @@ describe('api/notifications tests', () => {
 		expect(getResponse.status).toBe(200);
 		expect(getResponse.body[0].notificationName).toBe(notificationData.notificationName);
 		expect(JSON.stringify(getResponse.body[0].notifier)).toContain(notificationData.notifier);
-		expect(getResponse.body[0].notify_to[0]).toBe(user_saved.id);
+		expect(getResponse.body[0].notify_to).toBe(user_saved.id);
 		expect(getResponse.body[0].description).toBe(notificationData.description);
 		expect(JSON.stringify(getResponse.body[0]._id)).toContain(notificationSaved._id);
 	});
@@ -139,9 +139,9 @@ describe('api/notifications/possible_covid tests', () => {
 		await Notification.remove({});
 		await User.remove({});
 	});
-	
+
 	it('should persist notifications when received a POST request in possible_covid endpoint', async () => {
-  	var newUser = new User(userData);
+		var newUser = new User(userData);
 		var user_saved = await newUser.save();
 
 		var part1 = mongoose.Types.ObjectId();
@@ -151,34 +151,34 @@ describe('api/notifications/possible_covid tests', () => {
 			name: 'Protocolo test',
 			allowedHourFrom: 480, //Serian las 8 hs
 			allowedHourTo: 1200, // Serian las 20 hs
-			allowedPlaces: [{"Plaza": 10}],
+			allowedPlaces: [{ "Plaza": 10 }],
 			possibleCovidDays: 2,
 			description: 'Descripción testposible covid'
 		});
 
 		const active_prot = await prot.save();
 		let today = new Date()
-let twoDaysAgo = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() - 1)
-let evtData = new Event({
-            eventName: 'test evento posible covid',
-            date: twoDaysAgo,
-            hourFrom: 1000,
-            hourTo: 1060,
-            place: { name: "Plaza", numberParticipants: 10 },
-            participants: [part1, part2],
-            organizer: user_saved._id,
-            description: 'test posible covid'
-        });
-        let evtData2 = new Event({
-            eventName: 'test evento posible covid',
-            date: twoDaysAgo,
-            hourFrom: 1080,
-            hourTo: 1140,
-            place: { name: "Plaza", numberParticipants: 10 },
-            participants: [part1, user_saved._id],
-            organizer: part2,
-            description: 'test posible covid'
-        });
+		let twoDaysAgo = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() - 1)
+		let evtData = new Event({
+			eventName: 'test evento posible covid',
+			date: twoDaysAgo,
+			hourFrom: 1000,
+			hourTo: 1060,
+			place: { name: "Plaza", numberParticipants: 10 },
+			participants: [part1, part2],
+			organizer: user_saved._id,
+			description: 'test posible covid'
+		});
+		let evtData2 = new Event({
+			eventName: 'test evento posible covid',
+			date: twoDaysAgo,
+			hourFrom: 1080,
+			hourTo: 1140,
+			place: { name: "Plaza", numberParticipants: 10 },
+			participants: [part1, user_saved._id],
+			organizer: part2,
+			description: 'test posible covid'
+		});
 		const createEvent = new Event(evtData);
 		const evt = await createEvent.save();
 
@@ -188,10 +188,9 @@ let evtData = new Event({
 		var fullNotifData = JSON.parse(JSON.stringify(notificationData));
 		var notifications = await Notification.find({});
 		expect(notifications.length).toBe(0);
-		fullNotifData.notify_to.push(user_saved._id);
+		fullNotifData.notify_to = user_saved._id;
 		const postResponse = await request(app).post('/api/notifications/possible_covid/').send(fullNotifData);
 		expect(postResponse.status).toBe(201);
-		expect(postResponse.body.length).toBe(4);
-
+		expect(postResponse.body._id).toBeDefined();
 	});
 });

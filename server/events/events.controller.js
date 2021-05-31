@@ -15,7 +15,7 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
         type: 'Evento',
         date: savedEv.date,
         notifier: savedEv.organizer,
-        notify_to: [user_id],
+        notify_to: user_id,
         description: savedEv.description
       });
       const savedNotif = await notif.save();

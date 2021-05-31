@@ -2,7 +2,13 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import Notification from './notification.model';
 import Protocol from '../protocols/protocol.model';
-import { postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo,filterPossibleCovidEvents,notifyEvent} from '../helpers/apiHelpers';
+import { postDateEvents,eventsWhereParticiped,
+         allParticipantIDFrom,
+         notifyTo,
+         filterPossibleCovidEvents,
+         notifyEvent,
+         startDateFromProtocol,
+         createHealthCard} from '../helpers/apiHelpers';
 import { notificationTypes } from '../config'
 // new
 const router = Router();
@@ -56,23 +62,19 @@ router.route('/').get(async (_, response) => {
   return response.status(200).json(notifications);
 });
 
-// router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
-//   var notifyData = request.body;
-//   try {
-//     var protocol = await Protocol.findOne({ active: true });
-//     var date_from = new Date(new Date(notifyData.date).setHours(0,0,0,0));
-//     date_from.setDate(date_from.getDate() - protocol.possibleCovidDays);
+router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
+  try {
 
-//     let evts_target = await apiHelper.filterPossibleCovidEvents(notifyData.notifier, date_from);
+    let data = request.body;
+    data['type'] = 'Posible Positivo';
+    let healthCard = await createHealthCard(data)
+    return response.status(201).json(healthCard);
 
-//     notifyData.type = 'Posible Positivo';
-//     var notifications = await Promise.all(evts_target.map(async evt => {
-//       return await apiHelper.notifyEvent(evt, notifyData.notifier, notifyData);
-//     }));
-//     return response.status(201).json(notifications.flat());
-//   } catch (error) {
-//     return response.status(400).send(error);
-//   }
-// });
+  } catch (error) {
+
+    console.log(error)
+    return response.status(400).send(error);
+  }
+});
 
 export default router;

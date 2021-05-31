@@ -14,10 +14,10 @@ const notificationSchemaDef = {
 		type: Schema.Types.ObjectId, ref: 'User',
 		required: true
 	},
-	notify_to: [{
+	notify_to: {
 		type: Schema.Types.ObjectId, ref: 'User',
 		required: true
-	}],
+	},
 	event: {
 		type: Schema.Types.ObjectId, ref: 'Event'
 	},

@@ -1,3 +1,4 @@
+import {notificationTypes} from '../config'
 import { Schema, model } from 'mongoose';
 
 const notificationSchemaDef = {
@@ -30,7 +31,7 @@ const notificationSchemaDef = {
 	},
 	type: {
 		type: String,
-		enum: ['Evento', 'Contacto Estrecho', 'Posible Positivo', 'Resultado Test Positivo', 'Resultado Test Negativo'],
+		enum: notificationTypes,
 		required: true
 	}
 };

@@ -51,7 +51,7 @@ async function postDateEvents(contactDate) {
   async function notifyTo(event,usersIdToNotify,notifyData) {
     return await Promise.all(usersIdToNotify.map(async user => {
       if (user.toString() !== notifyData.notifier) {
-        notifyData.notify_to = [user];
+        notifyData.notify_to = user;
         notifyData.event = event
         const notification = new Notification(notifyData);
         let savedNotif = await notification.save();
@@ -62,5 +62,6 @@ async function postDateEvents(contactDate) {
     })
     )
   }
+
 
 export {postDateEvents,eventsWhereParticiped,allParticipantIDFrom,notifyTo} 

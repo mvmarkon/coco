@@ -5,5 +5,6 @@ export const notificationTypes = [
     'Contacto Estrecho',
     'Posible Positivo',
     'Resultado Test Positivo',
-    'Resultado Test Negativo'
+    'Resultado Test Negativo',
+    'Evento Cancelado'
 ];

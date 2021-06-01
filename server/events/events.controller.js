@@ -19,7 +19,6 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
         notifier: savedEv.organizer,
         notify_to: user_id,
         description: savedEv.description,
-        // TODO agregue el id del evento a la notificacion de evento
         event: mongoose.Types.ObjectId(event.id)
       });
       const savedNotif = await notif.save();

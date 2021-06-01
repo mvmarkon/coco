@@ -23,6 +23,12 @@ const protocolSchemaDef = {
 	},
 	description: {
 		type: String
+	},
+	quarantineCovid: {
+		type: Number
+	},
+	quarantineContact: {
+		type: Number
 	}
 };
 

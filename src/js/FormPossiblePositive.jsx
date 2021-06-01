@@ -32,13 +32,13 @@ const FormPossibleContact = () => {
         fetch('api/users/acquaintances/'+ localStorage.getItem('token')).then(
             res=> res.json()
         ).then(acquaintances=>
-            fetch('api/notifications',{
+            fetch('api/notifications/possible_covid/',{
                 method: 'POST',
                 headers: {
                     'Content-type' : 'application/json'
                 },
                 body:JSON.stringify({
-                    notify_to:acquaintances,
+                    // notify_to:acquaintances,
                     notified:false,
                     notificationName:'POSIBLE CASO DE COVID POSITIVO',
                     type: 'Posible Positivo',

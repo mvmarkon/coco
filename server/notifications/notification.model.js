@@ -1,5 +1,5 @@
-import {notificationTypes} from '../config'
 import { Schema, model } from 'mongoose';
+import {notificationTypes} from '../config';
 
 const notificationSchemaDef = {
 	notificationName: {
@@ -14,10 +14,10 @@ const notificationSchemaDef = {
 		type: Schema.Types.ObjectId, ref: 'User',
 		required: true
 	},
-	notify_to: [{
+	notify_to: {
 		type: Schema.Types.ObjectId, ref: 'User',
 		required: true
-	}],
+	},
 	event: {
 		type: Schema.Types.ObjectId, ref: 'Event'
 	},

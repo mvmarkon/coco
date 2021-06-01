@@ -158,27 +158,28 @@ describe('api/notifications/possible_covid tests', () => {
 
 		const active_prot = await prot.save();
 		let today = new Date()
-		let twoDaysAgo = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() - 1)
-		let evtData = new Event({
+		today.setDate(today.getDate() - 1);
+		let aDayAgo = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate()
+		let evtData ={
 			eventName: 'test evento posible covid',
-			date: twoDaysAgo,
+			date: aDayAgo,
 			hourFrom: 1000,
 			hourTo: 1060,
 			place: { name: "Plaza", numberParticipants: 10 },
 			participants: [part1, part2],
 			organizer: user_saved._id,
 			description: 'test posible covid'
-		});
-		let evtData2 = new Event({
+		};
+		let evtData2 = {
 			eventName: 'test evento posible covid',
-			date: twoDaysAgo,
+			date: aDayAgo,
 			hourFrom: 1080,
 			hourTo: 1140,
 			place: { name: "Plaza", numberParticipants: 10 },
 			participants: [part1, user_saved._id],
 			organizer: part2,
 			description: 'test posible covid'
-		});
+		};
 		const createEvent = new Event(evtData);
 		const evt = await createEvent.save();
 

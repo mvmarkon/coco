@@ -63,7 +63,8 @@ async function notifyTo(event, usersIdToNotify, notifyData) {
 			notifyData.notify_to = user;
 			notifyData.event = event
 			const notification = new Notification(notifyData);
-			return await notification.save();
+			const savedNotif = await notification.save();
+			return savedNotif;
 		} else {
 			return null;
 		}

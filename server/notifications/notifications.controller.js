@@ -10,6 +10,7 @@ import { postDateEvents,eventsWhereParticiped,
          startDateFromProtocol,
          createHealthCard} from '../helpers/apiHelpers';
 import { notificationTypes } from '../config'
+
 // new
 const router = Router();
 
@@ -39,7 +40,7 @@ router.route('/close_contact').post(bodyParser.json(), async (request,response) 
 
 router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
-    let {notify_to} = request.body
+      let {notify_to} = request.body
     notifyTo(null,notify_to,request.body)
     return response.status(201).json('OK');
   } catch (error) {
@@ -62,6 +63,20 @@ router.route('/').get(async (_, response) => {
   return response.status(200).json(notifications);
 });
 
+router.route('/notified/:id').patch(async (request, response) => {
+  Notification.findByIdAndUpdate(
+    {_id: request.params.id},
+    {notified: true},
+    {new: true},
+    function(err, model) {
+      if (err){
+        return response.status(400).send(err);
+      } else {
+        return response.status(200).json(model);
+      }
+    });
+});
+
 router.route('/possible_covid/').post(bodyParser.json(), async (request, response) => {
   try {
 
@@ -76,5 +91,6 @@ router.route('/possible_covid/').post(bodyParser.json(), async (request, respons
     return response.status(400).send(error);
   }
 });
+
 
 export default router;

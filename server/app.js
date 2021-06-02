@@ -10,7 +10,7 @@ import { followUpProcess } from './helpers/followUpHelper';
 
 // Create the express application
 const app = express();
-followUpProcess();
+// followUpProcess();
 // Assign controllers to routes
 app.use('/api/items', itemsController);
 app.use('/api/users', usersController);

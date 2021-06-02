@@ -6,9 +6,11 @@ import eventsController from './events/events.controller';
 import protocolsController from './protocols/protocols.controller';
 import notificationsController from './notifications/notifications.controller';
 import healthCardsController from './healthCards/healthCards.controller';
+import { followUpProcess } from './helpers/followUpHelper';
+
 // Create the express application
 const app = express();
-
+followUpProcess();
 // Assign controllers to routes
 app.use('/api/items', itemsController);
 app.use('/api/users', usersController);

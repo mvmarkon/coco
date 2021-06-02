@@ -20,7 +20,7 @@ export async function processCard (card) {
 }
 
 export async function followUpProcess() {
-	cron.schedule(cron_conf, async () => {
+	await cron.schedule(cron_conf, async () => {
 		console.log('Procesando fichas de salud');
 		try {
 				const cards = await HealthCard.find({});

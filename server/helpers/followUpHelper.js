@@ -1,5 +1,3 @@
-import cron from 'node-cron';
-import { cron_conf } from '../config';
 import HealthCard from '../healthCards/healthCard.model';
 import Notification from '../notifications/notification.model';
 
@@ -19,21 +17,19 @@ export async function processCard(card) {
 	}));
 }
 
-export function followUpProcess() {
-	cron.schedule(cron_conf, async () => {
-		console.log('Procesando fichas de salud');
-		// try {
-		// 	const cards = await HealthCard.find({});
-		// 	var processedCards = await Promise.all(await cards.map(async card => {
-		// 		const pcard = await processCard(card);
-		// 		return pcard;
-		// 	}));
-		// 	if (processedCards) {
-		// 		console.log('Se procesaron exitosamente ' + processedCards.flat().length + ' fichas de salud');
-		// 	}
-		// } catch (error) {
-		// 	console.log('Se produjo un error al procesar las fichas de salud. Detalles: ' + error);
-		// }
-	});
+export async function followUpProcess() {
+	console.log('Procesando fichas de salud');
+	try {
+		const cards = await HealthCard.find({});
+		var processedCards = await Promise.all(await cards.map(async card => {
+			const pcard = await processCard(card);
+			return pcard;
+		}));
+		if (processedCards) {
+			console.log('Se procesaron exitosamente ' + processedCards.flat().length + ' fichas de salud');
+		}
+	} catch (error) {
+		console.log('Se produjo un error al procesar las fichas de salud. Detalles: ' + error);
+	}
 }
 

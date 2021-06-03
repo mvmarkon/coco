@@ -1,13 +1,13 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
 import Notification from './notification.model';
-import Protocol from '../protocols/protocol.model';
+// import Protocol from '../protocols/protocol.model';
 import { postDateEvents,eventsWhereParticiped,
          allParticipantIDFrom,
          notifyTo,
-         filterPossibleCovidEvents,
-         notifyEvent,
-         startDateFromProtocol,
+        //  filterPossibleCovidEvents,
+        //  notifyEvent,
+        //  startDateFromProtocol,
          createHealthCard} from '../helpers/apiHelpers';
 import { notificationTypes } from '../config'
 
@@ -86,8 +86,6 @@ router.route('/possible_covid/').post(bodyParser.json(), async (request, respons
     return response.status(201).json(healthCard);
 
   } catch (error) {
-
-    console.log(error)
     return response.status(400).send(error);
   }
 });

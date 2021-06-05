@@ -26,14 +26,15 @@ defineFeature(feature , (test) => {
 		await db.stop()
 	})
 
-    // afterEach(async () => {
-	// 	await User.remove({});
-	// })
+    afterEach(async () => {
+		await User.remove({});
+	})
 
     test('Agregando un usuario que no tengo como conocido', ({ given, when,and, then }) => {
         let acquaintance
         let numberOfAcquaintances = 0
         let user
+        let response
 
         given('Tengo un usuario', async () => {
             user = await new User({
@@ -58,7 +59,7 @@ defineFeature(feature , (test) => {
         })
     
         when('Envio una peticion PUT al endpoint api/users/add_acquaintance_to con el id del usuario que quiero agregar', async () => {
-		    await request(app).put(`/api/users/add_acquaintance_to/${user._id}`).send({id_acquaintance_to_add:acquaintance._id})
+    		response = await request(app).put(`/api/users/add_acquaintance_to/${user._id}`).send({id_acquaintance_to_add:acquaintance._id})
         })
     
         then('El usuario se agrega a mis conocidos',async () => {
@@ -67,9 +68,56 @@ defineFeature(feature , (test) => {
             let { acquaintances } = res.body
             let { _id } = res2.body 
             numberOfAcquaintances = acquaintances.length
-            console.log(numberOfAcquaintances)
+
           expect(numberOfAcquaintances).toBe(1)
           expect(acquaintances[0]).toBe(_id)
+          expect(response.statusCode).toBe(200)
+          expect(response.text).toBe("El usuario tiene un nuevo conocido")
+
+        })
+    })
+    
+    test('Agregando un usuario que ya tengo como conocido', ({ given, when,and, then }) => {
+        let acquaintance
+        let numberOfAcquaintances = 0
+        let user
+        let res
+
+        given('Tengo un usuario al que quiero agregar como conocido', async () => {
+            acquaintance = await new User({
+                name: 'conocido',
+                nickName: 'usuario2',
+                age: 24,
+                email: 'conocido@mail.com',
+                acquaintances:[]
+            }).save()    
+        })
+
+        and('Tengo un usuario que ya conoce al usuario que quiero agregar como conocido', async () => {
+            user = await new User({
+                name: 'usuario',
+                nickName: 'usuario1',
+                age: 28,
+                email: 'usuario@mail.com',
+                acquaintances:[acquaintance._id]
+            }).save()
+            numberOfAcquaintances = user.acquaintances.length
+        })
+
+        when('Envio una peticion PUT al endpoint api/users/add_acquaintance_to con el id del usuario que quiero agregar', async () => {
+	    	res = await request(app).put(`/api/users/add_acquaintance_to/${user._id}`).send({id_acquaintance_to_add:acquaintance._id})
+        })
+    
+        then('Recibo un error del servidor',async () => {
+		    let myUser = await request(app).get(`/api/users/${user._id}`)
+            let acquaintanceOfMyUser = await request(app).get(`/api/users/${acquaintance._id}`)
+            let { acquaintances } = myUser.body
+            let { _id } = acquaintanceOfMyUser.body 
+            numberOfAcquaintances = acquaintances.length
+          expect(numberOfAcquaintances).toBe(1)
+          expect(acquaintances[0]).toBe(_id)
+          expect(res.statusCode).toBe(400)        
+          expect(res.text).toBe('El usuario ya tiene este conocido')        
 
         })
     })   

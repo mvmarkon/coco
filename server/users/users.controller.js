@@ -61,9 +61,10 @@ router.route('/add_acquaintance_to/:id').put(bodyParser.json(), async (req,res) 
   try {
       // si el usuario intenta agregarse a si mismo
       if (id === id_acquaintance_to_add) throw new Error('El usuario no puede agregarse a si mismo')
-
       // Si no lo tiene ya agregado , agrego el nuevo conocido al usuario
-      await User.findByIdAndUpdate(id,{ $addToSet: { 'acquaintances': id_acquaintance_to_add}},{useFindAndModify: false})
+      let respuesta=  await User.findByIdAndUpdate(id,{ $addToSet: { 'acquaintances': id_acquaintance_to_add}},{useFindAndModify: false})
+      // El usuario ya lo tiene como conocido
+      if (respuesta.acquaintances.some(acquaintancesId=>acquaintancesId==id_acquaintance_to_add)) throw new Error('El usuario ya tiene este conocido')
 
       // notifico a usuario agregado
       let data_new_acquaintance = { notificationName:'Nuevo conocido',date:new Date(),notifier:id,notify_to:id_acquaintance_to_add,type:notificationTypes[6]}
@@ -74,7 +75,7 @@ router.route('/add_acquaintance_to/:id').put(bodyParser.json(), async (req,res) 
   }
   catch(error) {
     // envio de error
-    res.status(400).send(error)
+    res.status(400).send(error.message)
   }
 })
 

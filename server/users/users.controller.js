@@ -4,6 +4,7 @@ import { Error } from 'mongoose';
 import { notifyTo } from '../helpers/apiHelpers';
 import User from './user.model';
 import { notificationTypes } from '../config'
+import { isAnAcquaintance,addAcquaintanceTo, notIsAnAcquaintance, isSomeUser, removeUserFrom } from '../helpers/userHelpers'
 
 
 const router = Router();
@@ -59,12 +60,14 @@ router.route('/add_acquaintance_to/:id').put(bodyParser.json(), async (req,res) 
   let { id_acquaintance_to_add } = req.body
 
   try {
-      // si el usuario intenta agregarse a si mismo
-      if (id === id_acquaintance_to_add) throw new Error('El usuario no puede agregarse a si mismo')
+      // checkea si el usuario intenta agregarse a si mismo
+      if (isSomeUser(id ,id_acquaintance_to_add)) throw new Error('El usuario no puede agregarse a si mismo')
+
       // Si no lo tiene ya agregado , agrego el nuevo conocido al usuario
-      let respuesta=  await User.findByIdAndUpdate(id,{ $addToSet: { 'acquaintances': id_acquaintance_to_add}},{useFindAndModify: false})
-      // El usuario ya lo tiene como conocido
-      if (respuesta.acquaintances.some(acquaintancesId=>acquaintancesId==id_acquaintance_to_add)) throw new Error('El usuario ya tiene este conocido')
+      let user =  await addAcquaintanceTo(id,id_acquaintance_to_add)
+
+      // Checkeo si el usuario ya lo tiene como conocido
+      if (isAnAcquaintance(user.acquaintances,id_acquaintance_to_add)) throw new Error('El usuario ya tiene este conocido')
 
       // notifico a usuario agregado
       let data_new_acquaintance = { notificationName:'Nuevo conocido',date:new Date(),notifier:id,notify_to:id_acquaintance_to_add,type:notificationTypes[6]}
@@ -79,6 +82,29 @@ router.route('/add_acquaintance_to/:id').put(bodyParser.json(), async (req,res) 
   }
 })
 
+router.route('/delete_known_to/:id').put(bodyParser.json(), async (req,res) => {
+  
+  let { id } = req.params
+  let { id_acquaintance_to_remove } = req.body
+
+  try { 
+      // checkea si el usuario intenta eliminarse a si mismo
+      if ( isSomeUser(id, id_acquaintance_to_remove) ) throw new Error('El usuario no puede eliminarse a si mismo')
+
+      // Elimina el usuario
+      let user = await removeUserFrom(id,id_acquaintance_to_remove)
+      
+      // Si no hay usuario que eliminar lanza una error
+      if ( notIsAnAcquaintance(user.acquaintances,id_acquaintance_to_remove)) throw new Error( 'El usuario no puede eliminar a alguien que no conoce' )
+      
+      // envio de respuesta satifactorio
+      res.status(200).send('El usuario a sido eliminado')      
+  }
+  catch(error) {
+    // envio de error
+    res.status(400).send(error.message)
+  }
+})
 
 
 export default router;

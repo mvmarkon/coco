@@ -7,6 +7,7 @@ export const notificationTypes = [
     'Resultado Test Positivo',
     'Resultado Test Negativo',
     'Evento Cancelado',
-    'Nuevo Conocido'
+    'Nuevo Conocido',
+    'Conocido Eliminado'
 ];
 export const healthCardTypes = ['Contacto Estrecho', 'Posible Positivo'];

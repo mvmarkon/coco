@@ -79,6 +79,33 @@ router.route('/add_acquaintance_to/:id').put(bodyParser.json(), async (req,res) 
   }
 })
 
+router.route('/delete_known_to/:id').put(bodyParser.json(), async (req,res) => {
+  
+  let { id } = req.params
+  let { id_acquaintance_to_remove } = req.body
+
+  try { 
+      // si el usuario intenta eliminarse a si mismo
+      if (id === id_acquaintance_to_remove) throw new Error('El usuario no puede eliminarse a si mismo')
+      
+      // Si no lo tiene no lo elimina y manda un error sino lo elimina
+      let respuesta=await User.findByIdAndUpdate(id,{ $pull: { 'acquaintances': id_acquaintance_to_remove}},{useFindAndModify: false})
+      
+      // El usuario no lo tiene para eliminar
+       if (!respuesta.acquaintances.some(acquaintancesId=>acquaintancesId==id_acquaintance_to_remove)) throw new Error('El usuario no puede eliminar a alguien que no conoce')
+
+      // notifico a usuario agregado
+      let data_new_acquaintance = { notificationName:'Conocido eliminado',date:new Date(),notifier:id,notify_to:id_acquaintance_to_remove,type:notificationTypes[7]}
+      await notifyTo(null,[id_acquaintance_to_remove],data_new_acquaintance)
+
+      // envio de respuesta satifactorio
+      res.status(200).send('El usuario a sido eliminado')
+  }
+  catch(error) {
+    // envio de error
+    res.status(400).send(error.message)
+  }
+})
 
 
 export default router;

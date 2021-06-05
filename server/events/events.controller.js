@@ -111,7 +111,7 @@ router.delete('/cancel_event/:id',async (req,res)=>{
       description: eventDeleted.description
     }
     // notificacion a usuarios de eliminacion de evento
-     await notifyTo(eventIdMoongoose,eventDeleted.participants,notification)
+    await notifyTo(eventIdMoongoose,eventDeleted.participants,notification)
     // respuesta    
     res.status(200).send('Evento cancelado y usuarios notificados')
   }

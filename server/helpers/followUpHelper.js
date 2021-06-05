@@ -13,9 +13,7 @@ export async function processCard(card) {
 			notiDesc = 'Cuarentena cumplida, quedate en casa';
 			kill = true;
 		}
-		console.log('==================')
-		console.log(card.type + ' -- Posible Positivo --' + card.daysPassed + ' PROTOCOLO '+ protocol.quarantineCovid)
-		console.log('==================')
+
 		if(card.type === 'Posible Positivo' && card.daysPassed > protocol.quarantineCovid) {
 			notiName = 'Finalizacion de estado de ' + card.type;
 			notiDesc = 'Cuarentena cumplida, quedate en casa';

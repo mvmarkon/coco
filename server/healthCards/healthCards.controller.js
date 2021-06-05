@@ -10,7 +10,6 @@ router.route('/').get(async (_, response) => {
 });
 
 router.route('/negative_result/:id').patch(async (request, response) => {
-  console.log('NEGATIVO')
   try {
     const hc = await HealthCard.findOne(
       {sourceUser: request.params.id,

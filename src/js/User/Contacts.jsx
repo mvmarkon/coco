@@ -86,22 +86,18 @@ const Contacs = () => {
     }
 
     const userToUnknown = (user) => {
-        debugger;
         const index = known.map(function(u) { return u._id; }).indexOf(user._id);
         const knw = known
         knw.splice(index, 1);
         setKnown(knw)
-        //const unkn = unknown.push(user)
         setUnknown(prev => ([...prev, ...[user]]));
     }
 
     const userToKnown = (user) => {
-        debugger;
         const index = unknown.map(function(u) { return u._id; }).indexOf(user._id);
         const unkw = unknown
         unkw.splice(index, 1)
         setUnknown(unkw);
-        //const knw = known.push(user)
         setKnown(prev => ([...prev, ...[user]]))
     }
 

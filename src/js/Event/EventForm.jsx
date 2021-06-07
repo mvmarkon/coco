@@ -163,7 +163,6 @@ const EventForm = () => {
   }
 
   const postData = (url, data) =>{ 
-    debugger;
     console.log(data)
     const response = fetch(url, {
       method: 'POST',

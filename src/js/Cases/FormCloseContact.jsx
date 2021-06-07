@@ -19,10 +19,10 @@ const FormCloseContact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch('api/users/acquaintances/60967a887dcec85999f5ed1d')
+        fetch('api/users/acquaintances/'+ localStorage.getItem('token'))
         .then(res=> res.json())
         .then(acquaintances=>
-            fetch('api/notifications', {
+            fetch('api/notifications/close_contact', {
                 method: 'POST',
                 headers: {
                     'Content-type' : 'application/json'
@@ -33,7 +33,7 @@ const FormCloseContact = () => {
                     notificationName:'Contacto estrecho',
                     date: new Date().toISOString(),
                     description: stateCovid==="1" ? 'Positivo' : 'Posible positivo',
-                    notifier: '60967a887dcec85999f5ed1d'
+                    notifier: localStorage.getItem('token')
                 })
             })
             .then(res=> { 

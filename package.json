@@ -10,10 +10,11 @@
   "dependencies": {
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "bootstrap": "^5.0.1",
     "express": "^4.17.1",
-
+    "jest-cucumber": "^3.0.1",
     "mongoose": "^5.9.15",
-    "npm": "^7.16.0",
+    "node-cron": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -32,7 +33,6 @@
     "babel-preset-minify": "^0.5.1",
     "chalk": "^4.0.0",
     "jest": "^24.9.0",
-    "jest-cucumber": "^3.0.1",
     "mongodb-memory-server": "^6.6.1",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"

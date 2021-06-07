@@ -13,6 +13,11 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
     return response.status(400).send(error);
   }
 });
+router.route('/active').get(async (_, response) => {
+  const protocols = await Protocol.findOne({active: true});
+  return response.status(200).json(protocols);
+});
+
 router.route('/').get(async (_, response) => {
   const protocols = await Protocol.find();
   return response.status(200).json(protocols);

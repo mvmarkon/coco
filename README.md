@@ -28,11 +28,6 @@ Start development client:
 yarn start-client
 ```
 
-Run client tests:
-```
-yarn test-client
-```
-
 Build client for production:
 ```
 yarn build-client
@@ -68,4 +63,9 @@ yarn build-server
 Start server in production environment:
 ```
 yarn serve
+```
+
+Run ATDD tests:
+```
+yarn atdd
 ```

@@ -1,0 +1,24 @@
+.events-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.event-container {
+    background-color: slateblue;
+    color: white;
+    border:1px solid black;
+    border-radius: 2em;
+    min-height: 500px;
+    width:25%;
+    margin:10px
+}
+
+.event-section {
+    border-bottom: 1px solid black;
+    padding:.5em;
+}
+
+.event-last-section {
+    border-bottom: 0;
+    display: flex;
+}

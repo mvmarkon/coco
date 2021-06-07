@@ -1,0 +1,29 @@
+.form_close_contact {
+    border:3px solid black;
+    width: 20em;
+    border-radius:1em;
+    text-align: center;
+}
+
+.form_section {
+    padding:1em;
+    border-bottom: 1px solid black;
+}
+
+.form_section:last-child {
+    border-bottom: 0;
+}
+
+.form_close_contact label {
+  margin-right: .5em;  
+}
+
+.submit-btn {
+    margin-top:20px;
+    font-size: 1em;
+    background-color: cornflowerblue;
+    color:white;
+    border-radius: 20px;
+    width: 80%;
+    height: 3em;
+}

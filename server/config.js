@@ -11,3 +11,4 @@ export const notificationTypes = [
     'Conocido Eliminado'
 ];
 export const healthCardTypes = ['Contacto Estrecho', 'Posible Positivo'];
+export const cron_conf = '0 0 * * *'

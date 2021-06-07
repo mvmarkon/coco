@@ -7,11 +7,12 @@ import {
   //Redirect
 } from "react-router-dom";
 
-import Start from "./Start";
-import EventForm from "./EventForm";
-import EventCalendar from "./EventCalendar";
-import CovidReportPage from "./CovidReportPage";
-import Notifications from "./NotificationList"
+import Start from "./User/Start";
+import EventForm from "./Event/EventForm";
+import EventCalendar from "./Event/EventCalendar";
+import CovidReportPage from "./Cases/CovidReportPage";
+import Notifications from "./Notification/NotificationList";
+import Contacts from "./User/Contacts"
 
 const CoCo = () => {
 
@@ -22,6 +23,7 @@ const CoCo = () => {
         <Route path = "/EventCalendar" component={EventCalendar}/>
         <Route path = "/CovidReport" component={CovidReportPage}/>
         <Route path = "/Notifications" component={Notifications}/>
+        <Route path = "/Contacts" component={Contacts}/>
         <Route path = "/" component={Start}/>
       </Switch>
     </Router>

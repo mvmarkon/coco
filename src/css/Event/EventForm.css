@@ -17,6 +17,10 @@
         display: none;
         visibility: hidden;
       }
+
+      .input{
+        justify-content: center;
+      }
   
       .ErrorVisible{
         visibility: visible;

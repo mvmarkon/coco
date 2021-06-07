@@ -6,7 +6,9 @@ export const notificationTypes = [
     'Posible Positivo',
     'Resultado Test Positivo',
     'Resultado Test Negativo',
-    'Evento Cancelado'
+    'Evento Cancelado',
+    'Nuevo Conocido',
+    'Conocido Eliminado'
 ];
 export const healthCardTypes = ['Contacto Estrecho', 'Posible Positivo'];
 export const cron_conf = '0 0 * * *'

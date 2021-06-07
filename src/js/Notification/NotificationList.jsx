@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../css/Notification.css'
+import '../../css/Notification/Notification.css'
 import Notification from './Notification'
 
 const Notifications = () => {
@@ -9,7 +9,8 @@ const Notifications = () => {
         const fetchNotis = async () => {
 			const notifs = await fetch('/api/notifications/'+ localStorage.getItem('token'))
 			.then(res => res.json())
-            const users = await fetch("api/users").then(res =>res.json())
+            const users = await fetch("api/users")
+			.then(res =>res.json())
 			const nots = notifs.map(not=>{
 				const notifier = users.find(user=>not.notifier === user._id).nickName
 				return{...not, notifier}

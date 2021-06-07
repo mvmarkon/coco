@@ -5,6 +5,7 @@ import { notifyTo } from '../helpers/apiHelpers';
 import User from './user.model';
 import { notificationTypes } from '../config'
 import { isAnAcquaintance,addAcquaintanceTo, notIsAnAcquaintance, isSomeUser, removeUserFrom } from '../helpers/userHelpers'
+import mongoose from 'mongoose';
 
 
 const router = Router();
@@ -31,6 +32,24 @@ router.route('/acquaintances/:id').get(async (request, response) => {
   } catch (error) {
     return response.status(404).send(error);
   }
+});
+
+router.route('/nicknames').get(async (_, response) => {
+  const users = await User.find({}, {nickName:1});
+  return response.status(200).json(users);
+});
+
+router.route('/idstonicknames').post(bodyParser.json(), async (req, res) => {
+    console.log(req.body)
+      var objsIds = req.body.map(id => mongoose.Types.ObjectId(id));
+      const users = await User.find(
+          {
+            "_id": {
+              "$in": objsIds
+            }
+          },
+          { nickName: 1 });
+      return res.status(200).json(users);
 });
 
 router.route('/:id').get(async (request, response) => {

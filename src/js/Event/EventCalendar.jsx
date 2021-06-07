@@ -1,10 +1,9 @@
 import React,{useEffect,useState} from 'react'
-import '../css/EventCalendar.css'
+import '../../css/Event/EventCalendar.css'
 import {Event} from './Event'
 
 const EventCalendar = () => {    
     const [upcomingEvents,setUpcomingEvents]= useState([])
-
     
     const handleCancelEvent = async (id) => {
         setUpcomingEvents(upcomingEvents.filter(evt=>evt._id!==id))
@@ -31,23 +30,22 @@ const EventCalendar = () => {
 
     return (
         <div className='events-container'>
-            {
-                upcomingEvents.map( event =>
-                    <div className="event-container" key = {event._id}>
-                     <Event 
-                         onCancelEvent={handleCancelEvent}
-                         name={event.eventName}
-                         date={event.date}
-                         id={event._id}
-                         hourFrom={event.hourFrom}
-                         hourTo={event.hourTo}
-                         place={event.place}
-                         organizer={event.organizer}
-                         participants={event.participants}
-                         description={event.description} />
-                    </div>
-                )
-            }    
+            {upcomingEvents.map( event =>
+                <div className="event-container" key = {event._id}>
+                    <Event 
+                        onCancelEvent={handleCancelEvent}
+                        name={event.eventName}
+                        date={event.date}
+                        id={event._id}
+                        hourFrom={event.hourFrom}
+                        hourTo={event.hourTo}
+                        place={event.place}
+                        organizer={event.organizer}
+                        participants={event.participants}
+                        description={event.description}
+                    />
+                </div>
+            )}    
         </div>
     )
 }

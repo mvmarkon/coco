@@ -1,12 +1,16 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
-import { Error } from 'mongoose';
+// import { Error } from 'mongoose';
 import { notifyTo } from '../helpers/apiHelpers';
 import User from './user.model';
 import { notificationTypes } from '../config'
 import { isAnAcquaintance,addAcquaintanceTo, notIsAnAcquaintance, isSomeUser, removeUserFrom } from '../helpers/userHelpers'
 import mongoose from 'mongoose';
 
+function Error(mensaje) {
+  this.message = mensaje;
+  this.name = "Error";
+}
 
 const router = Router();
 
@@ -51,25 +55,6 @@ router.route('/idstonicknames').post(bodyParser.json(), async (req, res) => {
           { nickName: 1 });
       return res.status(200).json(users);
 });
-
-router.route('/:id').get(async (request, response) => {
-  try {
-    const userbyid = await User.findById(request.params.id);
-    return response.status(200).json(userbyid);
-  } catch (iderror) {
-    const userEmail = await User.findOne({email: request.params.id});
-    if (userEmail) {
-      return response.status(200).json(userEmail);
-    } else {
-      const nickName = await User.findOne({nickName: request.params.id});
-      if(nickName) {
-        return response.status(200).json(nickName);
-      }
-      return response.status(404).send('El usuario solicitado no se encuentra en la base de datos');
-    }
-  }
-});
-
 
 // solo agrega de a uno
 
@@ -124,6 +109,25 @@ router.route('/delete_known_to/:id').put(bodyParser.json(), async (req,res) => {
     res.status(400).send(error.message)
   }
 })
+
+
+router.route('/:id').get(async (request, response) => {
+  try {
+    const userbyid = await User.findById(request.params.id);
+    return response.status(200).json(userbyid);
+  } catch (iderror) {
+    const userEmail = await User.findOne({email: request.params.id});
+    if (userEmail) {
+      return response.status(200).json(userEmail);
+    } else {
+      const nickName = await User.findOne({nickName: request.params.id});
+      if(nickName) {
+        return response.status(200).json(nickName);
+      }
+      return response.status(404).send('El usuario solicitado no se encuentra en la base de datos');
+    }
+  }
+});
 
 
 export default router;

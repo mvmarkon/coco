@@ -2,9 +2,10 @@ Feature: Agregar conocido
 
 Scenario: Agregando un usuario que no tengo como conocido
     Given Tengo un usuario   
-    And Tengo un usuario al que quiero agregar como conocido
+    And Tengo un usuario al que quiero agregar como conocido que no tiene ninguna notificacion
     When Envio una peticion PUT al endpoint api/users/add_acquaintance_to con el id del usuario que quiero agregar
-    Then El usuario se agrega a mis conocidos
+    Then El usuario se agrega a mis conocidos y recibe una notificacion
+
 
 Scenario: Agregando un usuario que ya tengo como conocido
     Given Tengo un usuario al que quiero agregar como conocido

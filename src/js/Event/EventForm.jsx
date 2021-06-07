@@ -95,7 +95,6 @@ const EventForm = () => {
   }
 
   const addParticipant = (event) =>{
-    debugger;
     var user = {_id: event.target.value, nickName: event.target.name}
     var changeIndex = acquaintances.map(function(u) { return u._id; }).indexOf(user._id);
     var newC = acquaintances
@@ -106,7 +105,7 @@ const EventForm = () => {
 
     setEventData({
       ...(eventData),
-      ['place']: {name: eventData.place.name, numberParticipants: eventData.place.numberParticipants + 1},
+      'place': {name: eventData.place.name, numberParticipants: eventData.place.numberParticipants + 1},
     });
 
     setAcquaintances(newC)
@@ -125,7 +124,6 @@ const EventForm = () => {
   }
 
   const quitParticipant = (event) =>{
-    debugger;
     var user = {_id: event.target.value, nickName: event.target.name}
     var changeIndex = participants.map(function(u) { return u._id; }).indexOf(user._id);
     var newP = participants
@@ -136,7 +134,7 @@ const EventForm = () => {
 
     setEventData({
       ...(eventData),
-      ['place']: {name: eventData.place.name, numberParticipants: eventData.place.numberParticipants - 1},
+      'place': {name: eventData.place.name, numberParticipants: eventData.place.numberParticipants - 1},
     });
 
     setParticipants(newP)
@@ -146,6 +144,7 @@ const EventForm = () => {
   }
 
   const handleConfirm = (event) =>{
+      console.log("confirmo")
       setEventData({
         ...(eventData),
       })
@@ -164,21 +163,23 @@ const EventForm = () => {
   }
 
   const postData = (url, data) =>{ 
-      console.log(data)
-        const response = fetch(url, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(res => {
-          console.log('Success:', response)
-          goToCalendar() 
-          res.json()})
-        .catch(error => console.error('Error:', error))
-      console.log(response)
-      return response;
+    debugger;
+    console.log(data)
+    const response = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      console.log('Success:', response)
+      goToCalendar() 
+      res.json()
+    })
+    .catch(error => console.error('Error:', error))
+    console.log(response)
+    return response;
   }
 
   const handleCancel = (event) =>{
@@ -189,7 +190,7 @@ const EventForm = () => {
   return (
     <div className="box Container App-header">
         <div className="FormTitle">Crea tu evento</div>
-        <form className="Form EventForm" onSubmit = {handleConfirm}>
+        <form className="Form EventForm">
             <div className="row mb-3 input input">
                 <label htmlFor="eventName" className="col-form-label">
                     Nombre:
@@ -199,12 +200,12 @@ const EventForm = () => {
                 </div>                
             </div>
             <div className="row mb-3 input">
-                <label htmlFor="eventDate" className="col-form-label">
+                <label htmlFor="date" className="col-form-label">
                     Fecha:
                 </label>
                 <br/>
                 <div className="col-sm-10">
-                    <input className="form-control" type="date" id="eventDate" name="eventDate" value={eventData.date} onChange={handleEventChange} required/>
+                    <input className="form-control" type="date" id="date" name="date" value={eventData.date} onChange={handleEventChange} required/>
                 </div>
             </div>
             <div className="row mb-3 input">
@@ -249,7 +250,7 @@ const EventForm = () => {
                     <div className="form-check radio" onChange = {handleLimit}>
                         {protocols.allowedPlaces.map((p, index) =>
                             <div key={'gridPlaces'+ index}>
-                                <input className="form-check-input" type="radio" name="gridPlaces" id={'gridPlaces'+ index} value = {p.limit}/>
+                                <input className="form-check-input" type="radio" name={p.name} id={'gridPlaces'+ index} value = {p.limit}/>
                                 <label className="form-check-label" htmlFor={'gridPlaces'+ index}>
                                     {p.name}
                                 </label>

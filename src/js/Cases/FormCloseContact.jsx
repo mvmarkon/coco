@@ -19,21 +19,28 @@ const FormCloseContact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch('api/notifications/close_contact',{
-            method: 'POST',
-            headers: {'Content-type' : 'application/json'},
-            body: JSON.stringify({
-                notified: false,
-                notificationName:'Contacto estrecho',
-                date: new Date().toISOString(),
-                description: stateCovid==="1" ? 'Positivo' : 'Posible positivo',
-                notifier: localStorage.getItem('token')
+        fetch('api/users/acquaintances/60967a887dcec85999f5ed1d')
+        .then(res=> res.json())
+        .then(acquaintances=>
+            fetch('api/notifications', {
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    notify_to: acquaintances,
+                    notified: false,
+                    notificationName:'Contacto estrecho',
+                    date: new Date().toISOString(),
+                    description: stateCovid==="1" ? 'Positivo' : 'Posible positivo',
+                    notifier: '60967a887dcec85999f5ed1d'
+                })
             })
-        }).then(res=> { 
-            if (res.status===201){
-                setNotifySuccess(true)
-            } else {console.log('Ocurrio un error el notificar, por favor intentelo mas tarde')}
-        })
+            .then(res=> { 
+            if (res.status===201){setNotifySuccess(true)} 
+            else {console.log('Ocurrio un error el notificar, por favor intentelo mas tarde')}
+            })
+        )
     }
 
     return(

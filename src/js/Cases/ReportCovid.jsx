@@ -13,7 +13,7 @@ const NotifyReportCovid = () => {
     const handleClick = (e) => {
         e.preventDefault()
         var token = localStorage.getItem('token')
-        fetch('api/healthCard/'+ e.target.value + '_result/' + token,{
+        fetch('api/healthCards/'+ e.target.value + '_result/' + token,{
             method: 'PATCH',
             headers: {'Content-type' : 'application/json'}    
         })
@@ -30,16 +30,16 @@ const NotifyReportCovid = () => {
         <div className='report-covid-container'>
             {showOptions ?
                 <div>
-                    <button onClick={handleClick} disabled={notifySuccess} value="positive" className="btn confirm-btn">
+                    <button onClick={handleClick} disabled={notifySuccess} value="positive" className="btn btn-success">
                         Positivo
                     </button>
-                    <button onClick={handleClick} disabled={notifySuccess} value="negative" className="btn negative-btn">
+                    <button onClick={handleClick} disabled={notifySuccess} value="negative" className="btn btn-danger">
                         Negativo
                     </button>
                     {notifySuccess ? <p>Notificaciones enviadas</p> : null}
                 </div>
                 :
-                <button onClick={handleShowOptions} className="btn">
+                <button onClick={handleShowOptions} className="btn btn-warning">
                     Notificar resultado de testeo
                 </button>
             }

@@ -27,7 +27,7 @@ export const Event = ({name, id, description, date, hourTo, hourFrom, place, org
                     <span>Hasta: {minToTime(hourTo)}</span>
                 </time>
                 <p>Lugar: {place.name}</p>
-                <p>Cantidad maxima de invitados: {place.numberParticipants}</p>
+                <p>Cantidad de invitados: {place.numberParticipants}</p>
             </div>
             <div className="event-section">
                 <h4>Organizador : <span>{organizer.name}</span></h4>

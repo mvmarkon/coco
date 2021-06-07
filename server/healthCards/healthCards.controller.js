@@ -11,9 +11,10 @@ router.route('/').get(async (_, response) => {
 
 router.route('/negative_result/:id').patch(async (request, response) => {
   try {
-    const hc = await HealthCard.findOne(
-      {sourceUser: request.params.id,
-      type: 'Posible Positivo'});
+    const hc = await HealthCard.findOne({
+      sourceUser: request.params.id,
+      type: 'Posible Positivo'
+    });
     let ndata = {
       notificationName: 'El resultado del posible covid fue negativo',
       type: hc.type,

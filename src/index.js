@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './css/index.css';
 import CoCo from './js/CoCo.jsx';
 import * as serviceWorker from './serviceWorker';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
     <CoCo />,

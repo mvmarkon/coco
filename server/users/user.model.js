@@ -19,7 +19,7 @@ const userSchemaDef = {
     unique: true,
     required: true
   },
-  acquaintances: [{
+  known: [{
     type: Schema.Types.ObjectId, ref: 'User'
   }],
   healthy: {

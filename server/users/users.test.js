@@ -43,7 +43,7 @@ describe('/api/users tests', () => {
   });
 });
 
-describe('api/users/acquaintances tests', () => {
+describe('api/users/known tests', () => {
   const mongod = new MongodbMemoryServer();
 
   beforeAll(async () => {
@@ -65,18 +65,18 @@ describe('api/users/acquaintances tests', () => {
     await User.remove({});
   });
 
-  it('should get user acquaintances', async () => {
+  it('should get user known', async () => {
     const user1 = new User({
       name:'Nombre1',
       nickName: 'Nickname',
       age: 28,
       email: 'mail1@mail.com',
-      acquaintances: [],
+      known: [],
       healthy: true
     })
     const user_saved = await user1.save();
 
-    const getResponse = await request(app).get('/api/users/acquaintances/' + user_saved.id);
+    const getResponse = await request(app).get('/api/users/known/' + user_saved.id);
     expect(getResponse.status).toBe(200);
     expect(getResponse.body.length).toBe(0);
   });

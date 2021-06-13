@@ -30,7 +30,7 @@ defineFeature(feature, (test) => {
 		place:'Plaza',
 		description: 'Evento ATDD',
 	};
-	var acquaintances = [];
+	var known = [];
 	var users = [
 		{
 			name: 'conocido1',
@@ -67,20 +67,20 @@ defineFeature(feature, (test) => {
 
 		const con1 = new User(users[0]);
 		const s1 = await con1.save();
-		acquaintances.push(s1._id)
+		known.push(s1._id)
 		const con2 = new User(users[1]);
 		const s2 = await con2.save();
-		acquaintances.push(s2._id)
+		known.push(s2._id)
 		const con3 = new User(users[2]);
 		const s3 = await con3.save();
-		acquaintances.push(s3._id)
+		known.push(s3._id)
 
 		var userData = {
 			name: 'Nombre',
 			nickName: 'Nickname',
 			age: 28,
 			email: 'mail1@mail.com',
-			acquaintances: acquaintances,
+			known: known,
 			healthy: true
 		}
 		const user = await new User(userData);
@@ -102,9 +102,9 @@ defineFeature(feature, (test) => {
 			expect(JSON.stringify(getResponse.body._id)).toContain(savedUser._id);
 		});
 		and('El usuario tiene conocidos', async () => {
-			const getacquaintances = await request(app).get('/api/users/acquaintances/'+savedUser._id);
-			expect(getacquaintances.status).toBe(200);
-			expect(getacquaintances.body.length).toEqual(3);
+			const getknown = await request(app).get('/api/users/known/'+savedUser._id);
+			expect(getknown.status).toBe(200);
+			expect(getknown.body.length).toEqual(3);
 		});
 
 		and('Existe un protocolo activo', async () => {
@@ -114,7 +114,7 @@ defineFeature(feature, (test) => {
 		});
 
 		when('Hago un POST al endpoint api/events con los datos para el evento', async () => {
-			validEventData['participants'] = [savedUser.acquaintances[1], savedUser.acquaintances[0]]
+			validEventData['participants'] = [savedUser.known[1], savedUser.known[0]]
 			validEventData['organizer'] = savedUser._id
 			const cerateEvent = await request(app).post('/api/events').send(validEventData);
 			expect(cerateEvent.status).toBe(200);
@@ -128,14 +128,14 @@ defineFeature(feature, (test) => {
 		});
 
 		and('Se genera una notificacion para cada conocido que se agrego en el evento', async () => {
-			const notif0 = await request(app).get('/api/notifications/'+savedUser.acquaintances[0]);
+			const notif0 = await request(app).get('/api/notifications/'+savedUser.known[0]);
 			expect(notif0.status).toBe(200);
 			expect(JSON.stringify(notif0.body[0].notifier)).toContain(savedUser._id);
-			const notif1 = await request(app).get('/api/notifications/'+savedUser.acquaintances[1]);
+			const notif1 = await request(app).get('/api/notifications/'+savedUser.known[1]);
 			expect(notif1.status).toBe(200);
 			expect(JSON.stringify(notif1.body[0].notifier)).toContain(savedUser._id);
 
-			const notif2 = await request(app).get('/api/notifications/'+savedUser.acquaintances[2]);
+			const notif2 = await request(app).get('/api/notifications/'+savedUser.known[2]);
 			expect(notif2.status).toBe(200);
 			expect(notif2.body.length).toBe(0);
 		});

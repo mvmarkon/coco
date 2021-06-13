@@ -7,7 +7,7 @@ import Notification from '../notifications/notification.model'
 import request from 'supertest';
 
 
-const feature = loadFeature('./server/atdd/add_acquaintance.feature')
+const feature = loadFeature('./server/atdd/add_known.feature')
 
 defineFeature(feature , (test) => {
     const db = new MongodbMemoryServer()
@@ -33,13 +33,13 @@ defineFeature(feature , (test) => {
 	})
 
     test('Agregando un usuario que no tengo como conocido', ({ given, when,and, then }) => {
-        let acquaintance
-        let numberOfAcquaintancesBeforeAddAcquaintance
-        let numberOfAcquaintancesAfterAddAcquaintance 
+        let known
+        let numberOfKnownBeforeAddKnown
+        let numberOfKnownAfterAddKnown 
         let user
         let response
-        let numberOfNotificationsBeforeAddAcquaintance  
-        let numberOfNotificationsAfterAddAcquaintance
+        let numberOfNotificationsBeforeAddKnown  
+        let numberOfNotificationsAfterAddKnown
 
         given('Tengo un usuario', async () => {
             user = await new User({
@@ -47,39 +47,39 @@ defineFeature(feature , (test) => {
                 nickName: 'usuario1',
                 age: 28,
                 email: 'usuario@mail.com',
-                acquaintances:[]
+                known:[]
             }).save()
-            numberOfAcquaintancesBeforeAddAcquaintance = user.acquaintances.length
+            numberOfKnownBeforeAddKnown = user.known.length
         })
           
         and('Tengo un usuario al que quiero agregar como conocido que no tiene ninguna notificacion', async () => {
-            acquaintance = await new User({
+            known = await new User({
                 name: 'conocido',
                 nickName: 'usuario2',
                 age: 28,
                 email: 'conocido@mail.com',
-                acquaintances:[]
+                known:[]
             }).save()
-            let req1 = await request(app).get(`/api/notifications/${acquaintance._id}`)
+            let req1 = await request(app).get(`/api/notifications/${known._id}`)
 
-            numberOfNotificationsBeforeAddAcquaintance = req1.body.length
+            numberOfNotificationsBeforeAddKnown = req1.body.length
         })
     
-        when('Envio una peticion PUT al endpoint api/users/add_acquaintance_to con el id del usuario que quiero agregar', async () => {
-    		response = await request(app).put(`/api/users/add_acquaintance_to/${user._id}`).send({id_acquaintance_to_add:acquaintance._id})
+        when('Envio una peticion PUT al endpoint api/users/add_known_to con el id del usuario que quiero agregar', async () => {
+    		response = await request(app).put(`/api/users/add_known_to/${user._id}`).send({id_known_to_add:known._id})
         })
     
         then('El usuario se agrega a mis conocidos y recibe una notificacion',async () =>  {
 		    let res = await request(app).get(`/api/users/${user._id}`)
-            let res2 = await request(app).get(`/api/users/${acquaintance._id}`)
-            let { acquaintances } = res.body
+            let res2 = await request(app).get(`/api/users/${known._id}`)
+            let { known } = res.body
             let { _id } = res2.body 
-            numberOfAcquaintancesAfterAddAcquaintance = acquaintances.length
-             let req2 = await request(app).get(`/api/notifications/${acquaintance._id}`)
-             numberOfNotificationsAfterAddAcquaintance = req2.body.length    
-          expect(numberOfAcquaintancesAfterAddAcquaintance).toBe(numberOfAcquaintancesBeforeAddAcquaintance+1)
-          expect(numberOfNotificationsAfterAddAcquaintance).toBe(numberOfNotificationsBeforeAddAcquaintance+1)
-          expect(acquaintances[0]).toBe(_id)
+            numberOfKnownAfterAddKnown = known.length
+             let req2 = await request(app).get(`/api/notifications/${known._id}`)
+             numberOfNotificationsAfterAddKnown = req2.body.length    
+          expect(numberOfKnownAfterAddKnown).toBe(numberOfKnownBeforeAddKnown+1)
+          expect(numberOfNotificationsAfterAddKnown).toBe(numberOfNotificationsBeforeAddKnown+1)
+          expect(known[0]).toBe(_id)
           expect(response.statusCode).toBe(200)
           expect(response.text).toBe("El usuario tiene un nuevo conocido")
 
@@ -87,18 +87,18 @@ defineFeature(feature , (test) => {
     })
     
     test('Agregando un usuario que ya tengo como conocido', ({ given, when,and, then }) => {
-        let acquaintance
-        let numberOfAcquaintances = 0
+        let known
+        let numberOfKnown = 0
         let user
         let res
 
         given('Tengo un usuario al que quiero agregar como conocido', async () => {
-            acquaintance = await new User({
+            known = await new User({
                 name: 'conocido',
                 nickName: 'usuario2',
                 age: 24,
                 email: 'conocido@mail.com',
-                acquaintances:[]
+                known:[]
             }).save()    
         })
 
@@ -108,23 +108,23 @@ defineFeature(feature , (test) => {
                 nickName: 'usuario1',
                 age: 28,
                 email: 'usuario@mail.com',
-                acquaintances:[acquaintance._id]
+                known:[known._id]
             }).save()
-            numberOfAcquaintances = user.acquaintances.length
+            numberOfKnown = user.known.length
         })
 
-        when('Envio una peticion PUT al endpoint api/users/add_acquaintance_to con el id del usuario que quiero agregar', async () => {
-	    	res = await request(app).put(`/api/users/add_acquaintance_to/${user._id}`).send({id_acquaintance_to_add:acquaintance._id})
+        when('Envio una peticion PUT al endpoint api/users/add_known_to con el id del usuario que quiero agregar', async () => {
+	    	res = await request(app).put(`/api/users/add_known_to/${user._id}`).send({id_known_to_add:known._id})
         })
     
         then('Recibo un error del servidor',async () => {
 		    let myUser = await request(app).get(`/api/users/${user._id}`)
-            let acquaintanceOfMyUser = await request(app).get(`/api/users/${acquaintance._id}`)
-            let { acquaintances } = myUser.body
-            let { _id } = acquaintanceOfMyUser.body 
-            numberOfAcquaintances = acquaintances.length
-          expect(numberOfAcquaintances).toBe(1)
-          expect(acquaintances[0]).toBe(_id)
+            let knownOfMyUser = await request(app).get(`/api/users/${known._id}`)
+            let { known } = myUser.body
+            let { _id } = knownOfMyUser.body 
+            numberOfKnown = known.length
+          expect(numberOfKnown).toBe(1)
+          expect(known[0]).toBe(_id)
           expect(res.statusCode).toBe(400)        
           expect(res.text).toBe('El usuario ya tiene este conocido')        
 

@@ -5,37 +5,21 @@ import {useHistory} from "react-router-dom";
 const Start = () => {
 
   const history = useHistory();
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const usrs = await fetch('/api/users')
-        .then((res) => res.json())
-      localStorage.clear()
-      setUsers(usrs)
-    }
-    fetchUsers()
-  }, [setUsers]);
-
-  const goToUser = (event) =>{
-    localStorage.setItem('token', event.target.getAttribute('token'))
-    localStorage.setItem('nickName', event.target.name)
-    history.push("/EventForm")
-    window.location.reload()
-  }
 
   return (
     <div className="App-header">
         <div className="App-title">
-          HOME
-        </div>        
-    <div className="btn-group-vertical center">
-      {users.map(u=>
-        <button key={u._id} type="button" className="btn btn-outline-warning" onClick ={goToUser} name= {u.nickName} token={u._id}>
-          {u.nickName}                            
-        </button>
-      )}
-    </div>
+          WELCOME TO Co Co
+        </div>
+        <div className="App-text">
+        PARA todos los que sufrimos la pandemia, <br/>
+        QUIENES queremos poder disfrutar de nuestras libertades sin miedo al contagio,<br/>
+        Comunidad Covid, ES una página web QUE te combina la información de tus actividades así como las de tus amigxs,<br/> 
+        junto con las reglamentaciones del gobierno.<br/>
+        A DIFERENCIA DE tener que estar atento a todas las redes y avisos nacionales, en comunicación constante.<br/>
+        NUESTRO PRODUCTO te permitirá continuar con tus actividades sociales,<br/>
+        sin correr riesgos (de salud o legales) ni tampoco poner en peligro a nadie.
+        </div>
   </div>
   )
 }

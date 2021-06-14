@@ -113,7 +113,7 @@ defineFeature(feature, (test) => {
 		});
 	});
 
-	test('[7.0] Cancelar evento sin participantes (salvo el creador)', ({given, and, when, then}) => {
+	test('[7.0] Cancelar evento sin participantes', ({given, and, when, then}) => {
 		givenUserExists(given);
 
 		andEventWithCreatedWithUserExists(and);
@@ -173,6 +173,12 @@ defineFeature(feature, (test) => {
 			const notif2 = await request(app).get('/api/notifications/' + part2._id);
 			expect(notif1.status).toBe(200);
 			expect(notif2.status).toBe(200);
+			expect(notif1.body[0].notifier).toBe(evt.organizer.toString());
+			expect(notif2.body[0].notifier).toBe(evt.organizer.toString());
+			expect(notif1.body[0].type).toBe('Evento Cancelado');
+			expect(notif2.body[0].type).toBe('Evento Cancelado');
+			expect(notif1.body[0].event).toBe(evt._id.toString());
+			expect(notif2.body[0].event).toBe(evt._id.toString());
 		})
 	});
 });

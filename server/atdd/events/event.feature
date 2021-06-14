@@ -15,7 +15,7 @@ Feature: Eventos
     When se pidan sus eventos (GET "/api/events/attended/")
     Then se devuelve lista de eventos
 
-  Scenario: [7.0] Cancelar evento sin participantes (salvo el creador)
+  Scenario: [7.0] Cancelar evento sin participantes
     Given que existe el usuario "Juan"
     And existe un evento que organiza
     When se cancela el evento (DELETE "/api/events/cancel_event/")

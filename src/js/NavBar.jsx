@@ -15,7 +15,6 @@ const NavBar = () => {
     };
 
     const handleLogout = () => {
-        debugger;
         localStorage.clear()
         handleClick()
     };

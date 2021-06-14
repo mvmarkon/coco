@@ -2,18 +2,82 @@ import React, {useEffect,useState}  from 'react';
 import '../../css/CoCo.css';
 import {useHistory} from "react-router-dom";
 
-const Login = () => {
+const initialData = {nickName: '', password: ''}
 
-  const history = useHistory();
+const Login = () => {
+    const [loginData, setLoginData] = useState(initialData);
+    const history = useHistory();
+
+    const handleEventChange = (event) =>{
+        event.preventDefault();
+        setLoginData({
+          ...(loginData),
+          [event.target.name]: event.target.value,
+        });
+    };
+
+    const handleConfirm = (event) =>{
+        debugger;
+        const response = fetch('api/users/login', {
+            method: 'POST',
+            body: JSON.stringify(loginData),
+            headers:{
+              'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log('Success:', res)
+            localStorage.setItem("token", res._id)
+            localStorage.setItem("nickName", res.nickName)
+            history.push("/Profile")
+            window.location.reload()
+        })
+        .catch(error => console.error('Error:', error))
+        return response;
+    }
+
+    const handleCancel = (event) =>{
+        event.preventDefault();
+        setLoginData(initialData);
+    }
 
   return (
-    <div className="App-header">
-        <div className="App-title">
-          LOGIN
+    <div className="box Container App-header">
+        <div className="FormTitle">
+            LOGIN
         </div>
-        <div className="App-text">
+
+        <form className="Form EventForm">
+            <div className="row mb-3 input input">
+                <label htmlFor="eventName" className="col-form-label">
+                    NickName:
+                </label>
+                <div className="col-sm-10">
+                    <input className="form-control" type="text" id="nickName" name="nickName" value={loginData.nickName} onChange={handleEventChange} required/>
+                </div>                
+            </div>
+            <div className="row mb-3 input input">
+                <label htmlFor="password" className="col-form-label">
+                    Password:
+                </label>
+                <div className="col-sm-10">
+                    <input className="form-control" type="password" id="password" name="password" value={loginData.password} onChange={handleEventChange} required/>
+                </div>                
+            </div>
+        </form>
+        
+        <div className = "ButtonRight">
+                <button className="Button ButtonRight" type="submit" onClick = {handleConfirm}>
+                    Confirmar
+                </button>
+            </div>
+        <div className = "ButtonLeft">
+            <button className="Button ButtonLeft" type="submit" onClick = {handleCancel}>
+                Cancelar
+            </button>
         </div>
-  </div>
+    </div>
   )
 }
 export default Login;

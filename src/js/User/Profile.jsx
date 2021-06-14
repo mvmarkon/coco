@@ -11,7 +11,6 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-        debugger;
         const usr = await fetch('/api/users/'+ token)
             .then((res) => res.json())
         setNickName(usr.nickName)

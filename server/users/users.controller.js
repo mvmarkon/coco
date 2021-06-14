@@ -18,7 +18,7 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
   try {
     const user = new User(request.body);
     await user.save();
-    return response.status(200).json('User created!');
+    return response.status(200).json(user);
   } catch (error) {
     return response.status(400).send(error);
   }
@@ -27,6 +27,21 @@ router.route('/').post(bodyParser.json(), async (request, response) => {
 router.route('/').get(async (_, response) => {
   const users = await User.find();
   return response.status(200).json(users);
+});
+
+router.route('/login').post(bodyParser.json(), async (req, res) => {
+    console.log(req.body);
+    try {
+        const user = await User.findOne(req.body);
+        console.log(user)
+        if (user) {
+            return res.status(200).json(user);
+        } else {
+            return res.status(401).json({'Error': 'El usuario o contraseña no son validas'})
+        }
+    } catch (error) {
+        return res.status(400).send(error);
+    }
 });
 
 router.route('/known/:id').get(async (request, response) => {

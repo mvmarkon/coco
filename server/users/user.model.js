@@ -10,6 +10,7 @@ const userSchemaDef = {
     required: true,
     unique: true
   },
+  password: { type: String },
   age: {
     type: Number,
     required: true,

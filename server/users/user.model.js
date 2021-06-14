@@ -10,6 +10,7 @@ const userSchemaDef = {
     required: true,
     unique: true
   },
+  password: { type: String },
   age: {
     type: Number,
     required: true,
@@ -19,7 +20,7 @@ const userSchemaDef = {
     unique: true,
     required: true
   },
-  acquaintances: [{
+  known: [{
     type: Schema.Types.ObjectId, ref: 'User'
   }],
   healthy: {

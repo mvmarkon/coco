@@ -12,7 +12,7 @@ const EventForm = () => {
   const [eventData, setEventData] = useState(initialData);
   const [user, setUser] = useState({});
   const [protocols, setProtocols] = useState({allowedHourFrom: 0, allowedHourTo: 1440, allowedPlaces: [{}]})
-  const [acquaintances, setAcquaintances] = useState([]);
+  const [known, setKnown] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [limitParticipants, setLimitParticipants] = useState("??");
   const [onLimit, setLimit] = useState(false);
@@ -24,15 +24,15 @@ const EventForm = () => {
       const prt = await fetch('/api/protocols/active')
         .then((res) => res.json())
 
-      var acquaintances = await fetch('/api/users/idstonicknames',{
+      await fetch('/api/users/idstonicknames',{
           method: 'POST',
-          body: JSON.stringify(usr.acquaintances),
+          body: JSON.stringify(usr.known),
           headers:{
             'Content-Type': 'application/json'
           }
       })
       .then(res => res.json())
-      .then(res => setAcquaintances(res))
+      .then(res => setKnown(res))
       setParticipants([])
       setProtocols(prt)
       setUser(usr)
@@ -49,12 +49,10 @@ const EventForm = () => {
   };
 
   const handleHourFrom = (event) =>{
-    console.log(event)
     setEventData({
       ...(eventData),
       hourFrom: event,
     });
-    console.log(eventData.hourFrom)
   };
 
   const handleHourTo = (event) =>{
@@ -62,7 +60,6 @@ const EventForm = () => {
       ...(eventData),
       hourTo: event,
     });
-    console.log(eventData.hourTo)
   };
 
   const timeToMin = (time) =>{
@@ -89,15 +86,15 @@ const EventForm = () => {
   }
 
   const clearParticipants  = () =>{
-    var newA = acquaintances.concat(participants)
-    setAcquaintances(newA) 
+    var newA = known.concat(participants)
+    setKnown(newA) 
     setParticipants([])
   }
 
   const addParticipant = (event) =>{
     var user = {_id: event.target.value, nickName: event.target.name}
-    var changeIndex = acquaintances.map(function(u) { return u._id; }).indexOf(user._id);
-    var newC = acquaintances
+    var changeIndex = known.map(function(u) { return u._id; }).indexOf(user._id);
+    var newC = known
     newC.splice(changeIndex, 1)
     
     //var newP = participants.concat([event.target.name])
@@ -108,7 +105,7 @@ const EventForm = () => {
       'place': {name: eventData.place.name, numberParticipants: eventData.place.numberParticipants + 1},
     });
 
-    setAcquaintances(newC)
+    setKnown(newC)
     //setParticipants(newP)
     setParticipants(prevParticipants => ([...prevParticipants, ...[participant]]))
 
@@ -129,7 +126,7 @@ const EventForm = () => {
     var newP = participants
     newP.splice(changeIndex, 1)
 
-    var newC = acquaintances.concat([user])
+    var newC = known.concat([user])
     //newC.push(event.target.name)
 
     setEventData({
@@ -138,13 +135,12 @@ const EventForm = () => {
     });
 
     setParticipants(newP)
-    setAcquaintances(newC)
+    setKnown(newC)
 
     checkLimit()
   }
 
   const handleConfirm = (event) =>{
-      console.log("confirmo")
       setEventData({
         ...(eventData),
       })
@@ -162,8 +158,7 @@ const EventForm = () => {
     window.location.reload()
   }
 
-  const postData = (url, data) =>{ 
-    console.log(data)
+  const postData = (url, data) =>{
     const response = fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -177,7 +172,6 @@ const EventForm = () => {
       res.json()
     })
     .catch(error => console.error('Error:', error))
-    console.log(response)
     return response;
   }
 
@@ -264,7 +258,7 @@ const EventForm = () => {
                         Conocidos
                     </button>
                     <div className="dropdown-content col-sm-10">
-                        {acquaintances.map(a=>
+                        {known.map(a=>
                             <button key = {a._id} onClick ={addParticipant} value={a._id} name = {a.nickName} disabled = {onLimit}>
                               {a.nickName}                            
                             </button>

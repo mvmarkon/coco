@@ -62,14 +62,16 @@ async function notifyTo(event, usersIdToNotify, notifyData) {
 		if (user.toString() !== notifyData.notifier) {
 			notifyData.notify_to = user;
 			notifyData.event = event
-			const notification = new Notification(notifyData);
-			const savedNotif = await notification.save();
-			return savedNotif;
+			return await createNotification(notifyData)
 		} else {
 			return null;
 		}
 	})
 	)
+}
+
+async function createNotification(notificationData) {
+	return await new Notification(notificationData).save()
 }
 
 async function createHealthCard(data) {
@@ -92,4 +94,4 @@ async function createHealthCard(data) {
 	return saved;
 }
 
-export { postDateEvents, eventsWhereParticiped, allParticipantIDFrom, notifyTo, createHealthCard, startDateFromProtocol } 
+export { createNotification,postDateEvents, eventsWhereParticiped, allParticipantIDFrom, notifyTo, createHealthCard, startDateFromProtocol } 

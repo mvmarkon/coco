@@ -11,7 +11,7 @@ const Contacs = () => {
 
 	useEffect(() => {
         const fetchKnown = async () => {
-			var knw = await fetch('/api/users/acquaintances/'+ token)
+			var knw = await fetch('/api/users/known/'+ token)
 			.then(res => res.json())
             var uknw = await fetch('/api/users')
 			.then(res => res.json())
@@ -49,14 +49,14 @@ const Contacs = () => {
             setUnknown(difference)
         }
         fetchKnown()
-    }, [setUnknown])
+    }, [setUnknown, token])
     
     const addUknown = (event) => {
         const id = event.target.getAttribute('value')
         const nickName = event.target.getAttribute('name')        
-        const response = fetch('/api/users/add_acquaintance_to/'+ token, {
+        const response = fetch('/api/users/add_known_to/'+ token, {
           method: 'PUT',
-          body: JSON.stringify({id_acquaintance_to_add: id}),
+          body: JSON.stringify({id_known_to_add: id}),
           headers:{
             'Content-Type': 'application/json'
           }
@@ -73,7 +73,7 @@ const Contacs = () => {
         const nickName = event.target.getAttribute('name')
         const response = fetch('/api/users/delete_known_to/'+ token, {
           method: 'PUT',
-          body: JSON.stringify({id_acquaintance_to_remove: id}),
+          body: JSON.stringify({id_known_to_remove: id}),
           headers:{
             'Content-Type': 'application/json'
           }

@@ -19,16 +19,16 @@ const FormCloseContact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch('api/users/acquaintances/'+ localStorage.getItem('token'))
+        fetch('api/users/known/'+ localStorage.getItem('token'))
         .then(res=> res.json())
-        .then(acquaintances=>
+        .then(known=>
             fetch('api/notifications/close_contact', {
                 method: 'POST',
                 headers: {
                     'Content-type' : 'application/json'
                 },
                 body: JSON.stringify({
-                    notify_to: acquaintances,
+                    notify_to: known,
                     notified: false,
                     notificationName:'Contacto estrecho',
                     date: new Date().toISOString(),

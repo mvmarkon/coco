@@ -21,7 +21,7 @@ const userData = new User({
 	nickName: 'Nickname1',
 	age: 28,
 	email: 'mail1@mail.com',
-	acquaintances: [],
+	known: [],
 	healthy: true
 })
 

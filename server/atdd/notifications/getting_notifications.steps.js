@@ -55,8 +55,7 @@ defineFeature(feature , (test) => {
                 name: 'usuario',
                 nickName: 'usuario1',
                 age: 28,
-                email: 'usuario@mail.com',
-                acquaintances:[]
+                email: 'usuario@mail.com'
             }
             user = await User.create(userData)
             await createNotificationTo(user)

@@ -8,22 +8,27 @@
     "yarn": ">=1.15.*"
   },
   "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "bootstrap": "^5.0.1",
     "express": "^4.17.1",
-    "mongoose": "^5.9.15"
+    "jest-cucumber": "^3.0.1",
+    "mongoose": "^5.9.15",
+    "node-cron": "^3.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.1",
+    "react-time-picker": "^4.2.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.8.0",
-    "@testing-library/react": "^10.0.4",
-    "@testing-library/user-event": "^10.3.4",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
+    "@testing-library/jest-dom": "^5.8.0",
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^10.3.4",
     "axios-mock-adapter": "^1.18.1",
     "babel-preset-minify": "^0.5.1",
     "chalk": "^4.0.0",
@@ -35,10 +40,10 @@
   "scripts": {
     "start-client": "react-scripts start",
     "build-client": "react-scripts build",
-    "test-client": "react-scripts test --coverage --watchAll=false",
     "serve": "cd build-server && node server.js",
     "start-server": "nodemon --exec babel-node server/server.js",
     "test-server": "jest --config=server/jest.config.js /server --coverage",
+    "atdd": "jest --config=server/jest.config.atdd.js /server",
     "build-server": "babel ./server --out-dir build-server --ignore \"server/coverage\",\"server/**/*.test.js\",\"server/jest.config.js\" --presets minify",
     "seed": "babel-node tools/seedDatabase.js"
   },

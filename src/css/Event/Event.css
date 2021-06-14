@@ -1,0 +1,10 @@
+.cancel-event-btn {
+    padding: 5px;
+    margin: 0 auto;
+    width: 75%;
+	background-color: #11a4d0;
+    border-radius: 20px;
+    font-weight: 200;
+    font-size: 1.2em;
+    color:white
+}

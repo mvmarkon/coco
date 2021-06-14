@@ -1,10 +1,7 @@
-import React, {useEffect,useState}  from 'react';
+import React  from 'react';
 import '../../css/CoCo.css';
-import {useHistory} from "react-router-dom";
 
 const Start = () => {
-
-  const history = useHistory();
 
   return (
     <div className="App-header">

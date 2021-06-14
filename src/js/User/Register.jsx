@@ -1,4 +1,4 @@
-import React, {useEffect,useState}  from 'react';
+import React, {useState}  from 'react';
 import '../../css/CoCo.css';
 import {useHistory} from "react-router-dom";
 
@@ -25,8 +25,9 @@ const Register = () => {
               'Content-Type': 'application/json'
             }
         })
-        .then(res => res.json())
-        .then(res => {
+        .then((response) => response.json())
+        .then(response => {
+            const res = response
             console.log('Success:', res)
             localStorage.setItem("token", res._id)
             localStorage.setItem("nickName", res.nickName)
@@ -34,6 +35,7 @@ const Register = () => {
             window.location.reload()
         })
         .catch(error => console.error('Error:', error))
+        return response
     }
     
 

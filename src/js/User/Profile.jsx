@@ -1,10 +1,8 @@
 import React, {useEffect,useState}  from 'react';
 import '../../css/CoCo.css';
-import {useHistory} from "react-router-dom";
 
 const Profile = () => {
 
-  const history = useHistory();
   const [nickName, setNickName] = useState("");
   const [known, setKnown] = useState([]);
   const token = localStorage.getItem('token')
@@ -17,7 +15,7 @@ const Profile = () => {
         setKnown(usr.known)
     }
     fetchUsers()
-  }, [setKnown]);
+  }, [setKnown, token]);
 
   return (
     <div className="App-header">

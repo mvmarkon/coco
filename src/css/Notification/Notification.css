@@ -1,32 +1,11 @@
-.notificationsStyle {
-	background-color: #FAFDD2;
-	padding: 15px;
-	box-shadow: 3px 6px 12px 0px rgba(0, 0, 0, 0.75);
-	transition: all .3s;
+.brown-color{
+	color: #9c6443;
 }
 
-.notificationsStyle:hover {
-	transform: scale(1.2);
+.black-color{
+	color: #282c34;
 }
 
-.actions {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 10px;
-
-	justify-content: end;
-}
-
-.container {
-	padding: 50px 0;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, 300 px);
-	grid-gap: 30 px;
-	row-gap: 30 px;
-}
-
-.stopped{
-	animation: spinner-grow .75s linear infinite;
-	animation-fill-mode: backwards;
-	animation-play-state: paused;
+.blue-color{
+	color: #11a4d0;
 }

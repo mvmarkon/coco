@@ -49,7 +49,7 @@ const Contacs = () => {
             setUnknown(difference)
         }
         fetchKnown()
-    }, [setUnknown])
+    }, [setUnknown, token])
     
     const addUknown = (event) => {
         const id = event.target.getAttribute('value')

@@ -24,7 +24,7 @@ const EventForm = () => {
       const prt = await fetch('/api/protocols/active')
         .then((res) => res.json())
 
-      var known = await fetch('/api/users/idstonicknames',{
+      await fetch('/api/users/idstonicknames',{
           method: 'POST',
           body: JSON.stringify(usr.known),
           headers:{
@@ -49,12 +49,10 @@ const EventForm = () => {
   };
 
   const handleHourFrom = (event) =>{
-    console.log(event)
     setEventData({
       ...(eventData),
       hourFrom: event,
     });
-    console.log(eventData.hourFrom)
   };
 
   const handleHourTo = (event) =>{
@@ -62,7 +60,6 @@ const EventForm = () => {
       ...(eventData),
       hourTo: event,
     });
-    console.log(eventData.hourTo)
   };
 
   const timeToMin = (time) =>{
@@ -144,7 +141,6 @@ const EventForm = () => {
   }
 
   const handleConfirm = (event) =>{
-      console.log("confirmo")
       setEventData({
         ...(eventData),
       })
@@ -162,8 +158,7 @@ const EventForm = () => {
     window.location.reload()
   }
 
-  const postData = (url, data) =>{ 
-    console.log(data)
+  const postData = (url, data) =>{
     const response = fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -177,7 +172,6 @@ const EventForm = () => {
       res.json()
     })
     .catch(error => console.error('Error:', error))
-    console.log(response)
     return response;
   }
 

@@ -15,7 +15,7 @@ export const Event = ({name, id, description, date, hourTo, hourFrom, place, org
     }  
 
     return (
-       <div className='App-header'>
+       <div className='event-container'>
             <p className="event-section event-title">
                 {name}
             </p>

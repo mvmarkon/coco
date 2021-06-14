@@ -1,21 +1,28 @@
 .events-container {
+    width: -webkit-fill-available;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
 }
 
 .event-container {
-    background-color: slateblue;
-    color: white;
+    background-color: #9c6443;
+    color: #282c34;
     border:1px solid black;
-    border-radius: 2em;
-    min-height: 500px;
-    width:25%;
+    border-radius: 1em;
+    width:100%;
     margin:10px
 }
 
 .event-section {
     border-bottom: 1px solid black;
     padding:.5em;
+}
+
+.blue-color{
+	background-color: #11a4d0;
 }
 
 .event-last-section {
